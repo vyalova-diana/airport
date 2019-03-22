@@ -1,0 +1,5 @@
+C:\Users\lost_\Documents\GitHub\airport\airplane\DatabaseClasses\bin\Debug\netcoreapp2.0\DatabaseClasses.deps.json
+C:\Users\lost_\Documents\GitHub\airport\airplane\DatabaseClasses\bin\Debug\netcoreapp2.0\DatabaseClasses.dll
+C:\Users\lost_\Documents\GitHub\airport\airplane\DatabaseClasses\obj\Debug\netcoreapp2.0\DatabaseClasses.csproj.CoreCompileInputs.cache
+C:\Users\lost_\Documents\GitHub\airport\airplane\DatabaseClasses\obj\Debug\netcoreapp2.0\DatabaseClasses.AssemblyInfoInputs.cache
+C:\Users\lost_\Documents\GitHub\airport\airplane\DatabaseClasses\obj\Debug\netcoreapp2.0\DatabaseClasses.AssemblyInfo.cs

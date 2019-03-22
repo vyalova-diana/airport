@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using airplane.Interfaces;
+using AirplaneClasses.Interfaces;
 
-namespace airplane
+namespace AirplaneClasses
 {
-	class Airplane
+	public class Airplane
 	{
+		public Airplane(int id)
+		{
+			ID = id;
+		}
+		public Airplane(int id, double fuel_max)
+		{
+			ID = id;
+			Fuel_max = fuel_max;
+		}
+
+		public int ID { get; }
 		// Пассажиры
 		private List<IPassenger> Passengers { get; set; }
 		// Багаж
@@ -99,6 +110,11 @@ namespace airplane
 		private void GetSchedule(DateTime departure, DateTime arrival)
 		{
 
+		}
+
+		public Airplane Clone()
+		{
+			return (Airplane)MemberwiseClone();
 		}
 	}
 }

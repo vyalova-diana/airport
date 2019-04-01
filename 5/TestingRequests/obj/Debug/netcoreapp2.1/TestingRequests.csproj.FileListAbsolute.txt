@@ -8,3 +8,7 @@ C:\Users\snxxy\source\repos\Refuelling\TestingRequests\obj\Debug\netcoreapp2.1\T
 C:\Users\snxxy\source\repos\Refuelling\TestingRequests\obj\Debug\netcoreapp2.1\TestingRequests.AssemblyInfo.cs
 C:\Users\snxxy\source\repos\Refuelling\TestingRequests\obj\Debug\netcoreapp2.1\TestingRequests.dll
 C:\Users\snxxy\source\repos\Refuelling\TestingRequests\obj\Debug\netcoreapp2.1\TestingRequests.pdb
+C:\Users\snxxy\source\repos\Refuelling\TestingRequests\bin\Debug\netcoreapp2.1\RefuelBackend.dll
+C:\Users\snxxy\source\repos\Refuelling\TestingRequests\bin\Debug\netcoreapp2.1\RefuelBackend.pdb
+C:\Users\snxxy\source\repos\Refuelling\TestingRequests\obj\Debug\netcoreapp2.1\TestingRequests.csprojAssemblyReference.cache
+C:\Users\snxxy\source\repos\Refuelling\TestingRequests\obj\Debug\netcoreapp2.1\TestingRequests.csproj.CopyComplete

@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v2.1": {
       "TestingRequests/1.0.0": {
+        "dependencies": {
+          "RefuelBackend": "1.0.0"
+        },
         "runtime": {
           "TestingRequests.dll": {}
+        }
+      },
+      "RefuelBackend/1.0.0": {
+        "runtime": {
+          "RefuelBackend.dll": {}
         }
       }
     }
   },
   "libraries": {
     "TestingRequests/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RefuelBackend/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

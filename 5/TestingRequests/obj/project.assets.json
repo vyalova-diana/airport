@@ -207,6 +207,19 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "RefuelBackend/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.1",
+        "dependencies": {
+          "Microsoft.NETCore.App": "2.1.0"
+        },
+        "compile": {
+          "bin/placeholder/RefuelBackend.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RefuelBackend.dll": {}
+        }
       }
     }
   },
@@ -680,11 +693,17 @@
         "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "RefuelBackend/1.0.0": {
+      "type": "project",
+      "path": "../RefuellerBackend/RefuelBackend.csproj",
+      "msbuildProject": "../RefuellerBackend/RefuelBackend.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
-      "Microsoft.NETCore.App >= 2.1.0"
+      "Microsoft.NETCore.App >= 2.1.0",
+      "RefuelBackend >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -716,7 +735,11 @@
       },
       "frameworks": {
         "netcoreapp2.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\snxxy\\source\\repos\\Refuelling\\RefuellerBackend\\RefuelBackend.csproj": {
+              "projectPath": "C:\\Users\\snxxy\\source\\repos\\Refuelling\\RefuellerBackend\\RefuelBackend.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -19,74 +19,22 @@ namespace RefuelService.Controllers
         [HttpGet("status")]
         public string Get()
         {
-            StatusManager sm = new StatusManager();
-            return sm.GetStatus().ToString();
+            return Vehicle.Instance.GetVehicleStatus();
         }
 
         // POST: Refueller
         [HttpPost]
-        public int Post(RefuelRequest newreqv)
+        public string Post(RefuelRequest newreqv)
         {
-            //calculate time
-            //request permission
-            //go to refuelling
-            //refuel
-            //requset permission
-            //return to base
-
-            //return newreqv.planeID;
-
-            RefuelTime rt = new RefuelTime();
-            var sleeptime = rt.CountTime(newreqv.fuelNeeded);
-            StatusManager sm = new StatusManager();
-            var status = sm.GetStatus();
-
-            string from = default(String);
-
-            if (status == 0)
+            try
             {
-                from = "'from': 'Garage', ";
+                string toStatus = "2" + " " + newreqv.planeID.ToString() + " " + newreqv.fuelNeeded.ToString();
+                FileManager.Instance.Set(toStatus, "../controllerStatus.txt", true);
+                return toStatus;
             }
-            else if (status == 1)
+            catch (Exception e)
             {
-                from = "'from': 'Gate', ";
-            }
-            var temp = newreqv.planeID.ToString();
-            string to = "'to': '" + temp + "', ";
-
-
-            string json = "{'service': 'Refuelling', 'identifier': '1'}";
-            var host = "http://localhost:4567/"; //???
-            var reqv = host + "/" + from + to + json;
-            string str = null;
-
-            var req = new StreamReader(HttpWebRequest.Create(reqv).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
-            if (str.Equals("Queued"))
-            {
-                //something
-            }
-
-            else if (str.Equals("Granted"))
-            {
-                sm.SaveStatus(2);
-                Thread.Sleep(10000);
-                sm.SaveStatus(3);
-                Thread.Sleep(sleeptime);
-                req = new StreamReader(HttpWebRequest.Create(reqv).GetResponse().GetResponseStream());
-                str = req.ReadToEnd();
-
-                if (str.Equals("Queued"))
-                {
-                    //something
-                }
-
-                else if (str.Equals("Granted"))
-                {
-                    sm.SaveStatus(2);
-                    Thread.Sleep(10000);
-                    sm.SaveStatus(0);
-                }
+                return e.Message;
             }
         }
     }

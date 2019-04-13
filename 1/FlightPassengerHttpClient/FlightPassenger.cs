@@ -131,7 +131,7 @@ namespace FlightPassengerHttpClient
             Console.WriteLine("{0} Waiting Registration", Passport.Surname);
             try
             {
-                var response = boardHttpClient.GetRegistrationStatus();
+                var response = boardHttpClient.GetRegistrationStatus(Ticket.fID);
                 if (response == RegistrationStatus.InProgress)
                 {
                     fsm.SetState(Registration);

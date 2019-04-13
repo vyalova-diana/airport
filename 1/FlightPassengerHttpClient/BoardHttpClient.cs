@@ -27,7 +27,7 @@ namespace FlightPassengerHttpClient
 
         public List<Flight> GetFlights()
         {
-            HttpResponseMessage response = Client.GetAsync("api/values").Result;
+            HttpResponseMessage response = Client.GetAsync("api/flightpassengers").Result;
             if (response.IsSuccessStatusCode)
             {
                 HttpContent responseContent = response.Content;

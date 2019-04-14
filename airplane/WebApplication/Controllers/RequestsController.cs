@@ -10,12 +10,17 @@ using DatabaseClasses;
 namespace WebApplication.Controllers
 {
     [Produces("application/json")]
-    [Route("api/plane")]
+    [Route("api/planes")]
     public class RequestsController : Controller
     {
-		protected IStorage Storage { get; } = new JSON();
+		protected static IStorage Storage { get; set; } = new JSON();
 
-		private List<Airplane> PlanePool { get; set; }
+		private Airplane CreatePlane(int id)
+		{
+			var newPlane = new Airplane(id);
+			Storage.CreateAirplane(newPlane);
+			return newPlane;
+		}
 
 		/*[HttpGet]
 		public Message[] Get()
@@ -35,33 +40,38 @@ namespace WebApplication.Controllers
 		{
 			Storage.AddMessage(msg);
 		}*/
-		[HttpPost]
+
+		[HttpGet]
 		[Route("create/{id}")]
-		public Airplane Post(int id)
+		public List<Airplane> Create(int id)
 		{
-			return CreatePlane(id);
+			if (Get(id).Count() == 0)
+			{
+				return new List<Airplane> { CreatePlane(id) };
+			}
+			else
+			{
+				return Get(id);
+			}
 		}
 
 		[HttpGet]
 		[Route("{id}")]
-		public Airplane Get(int id)
+		public List<Airplane> Get(int id)
 		{
-			var plane = PlanePool.Where(x => x.ID == id).First();
-			if (plane == null)
+			if (Storage.Airplanes != null)
 			{
-				return CreatePlane(id);
+				var sequence = Storage.Airplanes.Where(x => x.ID == id);
+				/*if (sequence.Count() == 0)
+				{
+					return null;
+				}*/
+				return sequence.ToList();
 			}
 			else
 			{
-				return plane;
+				return new List<Airplane>();
 			}
-		}
-
-		private Airplane CreatePlane(int id)
-		{
-			var newPlane = new Airplane(id);
-			PlanePool.Add(newPlane.Clone());
-			return newPlane;
 		}
 	}
 }

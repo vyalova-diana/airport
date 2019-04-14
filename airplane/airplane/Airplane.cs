@@ -2,10 +2,31 @@
 using System.Collections.Generic;
 using System.Net;
 using AirplaneClasses.Interfaces;
+using Newtonsoft.Json;
 
 namespace AirplaneClasses
 {
-	public class Airplane
+	interface IPlane
+	{
+		int ID { get; }
+		// Пассажиры
+		List<IPassenger> Passengers { get; set; }
+		// Багаж
+		List<IBaggage> Baggage { get; set; }
+		// Топливо
+		double Fuel { get; set; }
+		// Емкость топливного бака
+		double Fuel_max { get; set; }
+		// Обработан ли антиобледенителем
+		bool Defrosted { get; set; }
+		// Еда
+		List<IFood> Food { get; set; }
+		// Время отправки
+		DateTime Departure { get; set; }
+		// Время прибытия
+		DateTime Arrival { get; set; }
+	}
+	public class Airplane : IPlane
 	{
 		public Airplane(int id)
 		{
@@ -17,23 +38,36 @@ namespace AirplaneClasses
 			Fuel_max = fuel_max;
 		}
 
+		[JsonConstructor]
+		public Airplane(int iD, List<IPassenger> passengers, List<IBaggage> baggage, double fuel, double fuel_max, bool defrosted, List<IFood> food, DateTime departure, DateTime arrival) : this(iD)
+		{
+			Passengers = passengers;
+			Baggage = baggage;
+			Fuel = fuel;
+			Fuel_max = fuel_max;
+			Defrosted = defrosted;
+			Food = food;
+			Departure = departure;
+			Arrival = arrival;
+		}
+
 		public int ID { get; }
 		// Пассажиры
-		private List<IPassenger> Passengers { get; set; }
+		public List<IPassenger> Passengers { get; set; }
 		// Багаж
-		private List<IBaggage> Baggage { get; set; }
+		public List<IBaggage> Baggage { get; set; }
 		// Топливо
-		private double Fuel { get; set; }
+		public double Fuel { get; set; }
 		// Емкость топливного бака
-		private double Fuel_max { get; set; }
+		public double Fuel_max { get; set; }
 		// Обработан ли антиобледенителем
-		private bool Defrosted { get; set; }
+		public bool Defrosted { get; set; }
 		// Еда
-		private List<IFood> Food { get; set; }
+		public List<IFood> Food { get; set; }
 		// Время отправки
-		private DateTime Departure { get; set; }
+		public DateTime Departure { get; set; }
 		// Время прибытия
-		private DateTime Arrival { get; set; }
+		public DateTime Arrival { get; set; }
 
 		// Метод получения пассажиров
 		private void GetPassengers(List<IPassenger> Passengers)

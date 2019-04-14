@@ -1,18 +1,18 @@
 ﻿namespace AirplaneClasses.Interfaces
 {
-	interface IPassenger
+	public interface IPassenger
 	{
 
 	}
-	interface IBaggage
+	public interface IBaggage
 	{
 
 	}
-	interface IFood
+	public interface IFood
 	{
 
 	}
-	interface IRoute
+	public interface IRoute
 	{
 
 	}

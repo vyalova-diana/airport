@@ -11,28 +11,28 @@ namespace DatabaseClasses
 	{
 		private readonly string Path = "..\\storage.json";
 
-		private List<Airplane> airplanes = null;
+		public List<Airplane> Airplanes { get; set; }
 
 		public List<Airplane> ReadAll()
 		{
 			using (StreamReader r = new StreamReader(Path))
 			{
 				string json = r.ReadToEnd();
-				List<Airplane> airplanes = JsonConvert.DeserializeObject<List<Airplane>>(json);
-				return airplanes;
+				List<Airplane> Airplanes = JsonConvert.DeserializeObject<List<Airplane>>(json);
+				return Airplanes;
 			}
 		}
 
 		public List<Airplane> ReadById(int id)
 		{
-			return airplanes != null ? airplanes.Where(x => x.ID == id).ToList() : new List<Airplane>();
+			return Airplanes != null ? Airplanes.Where(x => x.ID == id).ToList() : new List<Airplane>();
 		}
 
 		public void CreateAirplane(Airplane airplane)
 		{
-			airplanes.Add(airplane);
+			Airplanes.Add(airplane);
 
-			var serialized = JsonConvert.SerializeObject(airplanes);
+			var serialized = JsonConvert.SerializeObject(Airplanes);
 			using (StreamWriter w = new StreamWriter(Path, false))
 			{
 				w.Write(serialized);
@@ -46,7 +46,11 @@ namespace DatabaseClasses
 				using (StreamReader r = new StreamReader(Path))
 				{
 					string json = r.ReadToEnd();
-					airplanes = JsonConvert.DeserializeObject<List<Airplane>>(json);
+					Airplanes = JsonConvert.DeserializeObject<List<Airplane>>(json);
+					if (Airplanes == null)
+					{
+						Airplanes = new List<Airplane>();
+					}
 				}
 			}
 			else
@@ -54,6 +58,7 @@ namespace DatabaseClasses
 				using (StreamWriter sw = File.AppendText(Path))
 				{
 					sw.Write("");
+					Airplanes = new List<Airplane>();
 				}
 			}
 		}

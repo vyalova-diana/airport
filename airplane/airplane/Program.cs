@@ -10,6 +10,9 @@ namespace AirplaneClasses
 	{
 		static void Main(string[] args)
 		{
+			// Console, testing requests and etc.
+
+
 		}
 	}
 }

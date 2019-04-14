@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace FlightPassengerHttpClient
 {
@@ -27,7 +28,7 @@ namespace FlightPassengerHttpClient
 
         public List<Flight> GetFlights()
         {
-            HttpResponseMessage response = Client.GetAsync("api/values").Result;
+            HttpResponseMessage response = Client.GetAsync("api/flightpassengers").Result;
             if (response.IsSuccessStatusCode)
             {
                 HttpContent responseContent = response.Content;
@@ -38,9 +39,10 @@ namespace FlightPassengerHttpClient
             else
                 return null;
         }
-        public RegistrationStatus GetRegistrationStatus()
+        public RegistrationStatus GetRegistrationStatus(Guid flightId)
         {
-            HttpResponseMessage response = Client.GetAsync("api/values/3").Result;
+            var stringContent = new StringContent(JsonConvert.SerializeObject(flightId), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = Client.PostAsync("api/values/3", stringContent).Result;
             if (response.IsSuccessStatusCode)
             {
                 HttpContent responseContent = response.Content;

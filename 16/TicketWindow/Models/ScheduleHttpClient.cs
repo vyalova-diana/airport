@@ -9,7 +9,7 @@ namespace TicketWindow.Models
 {
     public class ScheduleHttpClient
     {
-        public static string ScheduleRequest(Guid flightID)
+        public static string ScheduleRequest(int flightID)
         {
             var host = "http://localhost:61120/Schedule/" + flightID.ToString();
             string str = null;

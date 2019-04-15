@@ -6,7 +6,7 @@ namespace FlightPassengerHttpClient
 {
     public class Ticket
     {
-        public Ticket(Guid ticketId, Guid passnegerId, Guid flightId, string cityArrive, string givenNames, string surname, Sex gender)
+        public Ticket(Guid ticketId, Guid passnegerId, int flightId, string cityArrive, string givenNames, string surname, Sex gender)
         {
             tID = ticketId;
             pID = passnegerId;
@@ -16,13 +16,12 @@ namespace FlightPassengerHttpClient
             pSecondName = surname;
             sex = gender;
         }
-        public Guid tID; //id билета
-        public static int count;
-        public Guid pID; //id пассажира
-        public Guid fID; //id рейса
-        public string city; //место назначения
-        public string pName; //имя
-        public string pSecondName; //фамилия
-        public Sex sex; //пол
+        public Guid tID;
+        public Guid pID; //passenger ID
+        public int fID; //flight ID
+        public string city;
+        public string pName;
+        public string pSecondName;
+        public Sex sex;
     }
 }

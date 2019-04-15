@@ -101,7 +101,7 @@ namespace TicketList
         }
 
         //number of passangers in particular flight
-        public int flightCount(Guid fID)
+        public int flightCount(int fID)
         {
             int count = 0;
             for (int i = 0; i < boughtTickets.Count; i++)

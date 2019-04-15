@@ -19,16 +19,8 @@ namespace FlightPassengerApi.Controllers
             _db = db;
         }
         [HttpPost]
-        public ActionResult BusArrivedToPassengerStorage([FromBody] (Guid flightId, Guid busId, int numberOfBusSeats) flightBus)
+        public ActionResult BusArrivedToPassengerStorage([FromBody] (int flightId, Guid busId, int numberOfBusSeats) flightBus)
         {
-            /*
-            var busPassengers = _db.flightPassengers.FindAll((fp) => fp.Ticket.fID == flightBus.);
-            foreach (var bp in busPassengers)
-            {
-                Task.Run(() => bp.BusArrivedToPassengerStorage(reisBus.busId));
-            }
-            return NoContent();
-            */
             var busPassengers = _db.flightPassengers.Where((fp) => fp.Ticket.fID == flightBus.flightId).Take(flightBus.numberOfBusSeats).ToList();
             foreach (var bp in busPassengers)
             {
@@ -48,7 +40,7 @@ namespace FlightPassengerApi.Controllers
             return NoContent();
         }
         [HttpPost]
-        public ActionResult Takeoff([FromBody] Guid flightId)
+        public ActionResult Takeoff([FromBody] int flightId)
         {
             var airplanePassengers = _db.flightPassengers.FindAll((fp) => fp.Ticket.fID == flightId);
             foreach (var ap in airplanePassengers)
@@ -97,7 +89,7 @@ namespace FlightPassengerApi.Controllers
             return Ok(airplanePassengers);
         }
         [HttpPost]
-        public ActionResult AirplaneLanded([FromBody] Guid flightId)
+        public ActionResult AirplaneLanded([FromBody] int flightId)
         {
             var airplanePassengers = _db.arriveFlightPassengers.FindAll((ap) => ap.Ticket.fID == flightId);
             foreach (var ap in airplanePassengers)
@@ -107,7 +99,7 @@ namespace FlightPassengerApi.Controllers
             return NoContent();
         }
         [HttpPost]
-        public ActionResult BusArrivedToLandedAirplane([FromBody] (Guid flightId, Guid busId, int numberOfBusSeats) flightBus)
+        public ActionResult BusArrivedToLandedAirplane([FromBody] (int flightId, Guid busId, int numberOfBusSeats) flightBus)
         {
             var busPassengers = _db.arriveFlightPassengers.Where((fp) => fp.Ticket.fID == flightBus.flightId).Take(flightBus.numberOfBusSeats).ToList();
             foreach (var bp in busPassengers)

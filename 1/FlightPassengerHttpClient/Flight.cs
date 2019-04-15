@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace FlightPassengerHttpClient
@@ -10,10 +11,10 @@ namespace FlightPassengerHttpClient
         public string to { get; set; }
         public int timeStart { get; set; }
         public int timeStop { get; set; }
-        public int count { get; set; }
-        public Guid reisNumber { get; set; }
-        public Guid plain { get; set; }
-        public int registrtionTime { get; set; }
-        public int boardingTime { get; set; }
+        public int? count { get; set; }
+        public int reisNumber { get; set; }
+        public int? plain { get; set; }
+        public int? registrtionTime { get; set; }
+        public int? boardingTime { get; set; }
     }
 }

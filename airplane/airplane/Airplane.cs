@@ -6,9 +6,30 @@ using Newtonsoft.Json;
 
 namespace AirplaneClasses
 {
-	interface IPlane
+	public interface IPlane
 	{
-		int ID { get; }
+		int Id { get; }
+
+		int Status { get; set; }
+		/*
+		 * 0 - Только что создан. Ожидает приказов в гараже аэропорта.
+		 * 1 - Ожидает Follow Me.
+		 * 2 - Прикреплен к Follow Me.
+		 * 3 - Загрузка пассажиров.
+		 * 4 - Ожидает обслуживания.
+		 * 5 - Находится в обслуживании.
+		 * 6 - Загрузка пассажиров.
+		 * 7 - Ожидание взлета.
+		 * 8 - Взлет.
+		 * 9 - Полет и деструкция.
+		 * 10 - Только что создан, в полете к аэропорту.
+		 * 11 - Готовится к посадке.
+		 * 12 - Посадка.
+		 * 13 - Разгрузка пассажиров.
+		 * 14 - Обслуживание?
+		 * 15 - Ожидание Follow Me в гараж.
+		 * 16 - Прикреплен к Follow Me в гараж.
+		 */
 		// Пассажиры
 		List<IPassenger> Passengers { get; set; }
 		// Багаж
@@ -16,59 +37,47 @@ namespace AirplaneClasses
 		// Топливо
 		double Fuel { get; set; }
 		// Емкость топливного бака
-		double Fuel_max { get; set; }
+		double FuelMax { get; set; }
 		// Обработан ли антиобледенителем
 		bool Defrosted { get; set; }
 		// Еда
 		List<IFood> Food { get; set; }
-		// Время отправки
-		DateTime Departure { get; set; }
-		// Время прибытия
-		DateTime Arrival { get; set; }
+		// Рейс, маршрут
+		StandardRoute Route { get; set; }
 	}
 	public class Airplane : IPlane
 	{
+		public int Id { get; }
+		public int Status { get; set; }
+		public List<IPassenger> Passengers { get; set; }
+		public StandardRoute Route { get; set; }
+		public List<IBaggage> Baggage { get; set; }
+		public double Fuel { get; set; }
+		public double FuelMax { get; set; }
+		public bool Defrosted { get; set; }
+		public List<IFood> Food { get; set; }
+
+		public Airplane() { }
 		public Airplane(int id)
 		{
-			ID = id;
-		}
-		public Airplane(int id, double fuel_max)
-		{
-			ID = id;
-			Fuel_max = fuel_max;
+			Id = id;
 		}
 
 		[JsonConstructor]
-		public Airplane(int iD, List<IPassenger> passengers, List<IBaggage> baggage, double fuel, double fuel_max, bool defrosted, List<IFood> food, DateTime departure, DateTime arrival) : this(iD)
+		public Airplane(int iD, int status, List<IPassenger> passengers, StandardRoute route, List<IBaggage> baggage, double fuel, double fuelMax, bool defrosted, List<IFood> food) : this(iD)
 		{
+			Id = iD;
+			Status = status;
 			Passengers = passengers;
+			Route = route;
 			Baggage = baggage;
 			Fuel = fuel;
-			Fuel_max = fuel_max;
+			FuelMax = fuelMax;
 			Defrosted = defrosted;
 			Food = food;
-			Departure = departure;
-			Arrival = arrival;
 		}
 
-		public int ID { get; }
-		// Пассажиры
-		public List<IPassenger> Passengers { get; set; }
-		// Багаж
-		public List<IBaggage> Baggage { get; set; }
-		// Топливо
-		public double Fuel { get; set; }
-		// Емкость топливного бака
-		public double Fuel_max { get; set; }
-		// Обработан ли антиобледенителем
-		public bool Defrosted { get; set; }
-		// Еда
-		public List<IFood> Food { get; set; }
-		// Время отправки
-		public DateTime Departure { get; set; }
-		// Время прибытия
-		public DateTime Arrival { get; set; }
-
+		/*
 		// Метод получения пассажиров
 		private void GetPassengers(List<IPassenger> Passengers)
 		{
@@ -150,5 +159,6 @@ namespace AirplaneClasses
 		{
 			return (Airplane)MemberwiseClone();
 		}
+		*/
 	}
 }

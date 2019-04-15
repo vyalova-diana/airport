@@ -5,9 +5,10 @@ using AirplaneClasses;
 
 namespace DatabaseClasses
 {
+	// Unused
 	public interface IStorage
 	{
 		List<Airplane> Airplanes { get; set; }
-		void CreateAirplane(Airplane airplane);
+		Airplane CreateAirplane();
 	}
 }

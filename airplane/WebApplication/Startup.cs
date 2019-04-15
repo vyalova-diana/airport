@@ -46,8 +46,12 @@ namespace WebApplication
                     template: "{controller=Home}/{action=Index}/{id?}");
 
 				routes.MapRoute(
-					name: "Requests default route",
+					name: "Planes by id",
 					template: "{controller=Home}/{id}");
+
+				routes.MapRoute(
+					name: "Planes remove by id",
+					template: "{controller=Home}/remove/{id}");
 			});
         }
     }

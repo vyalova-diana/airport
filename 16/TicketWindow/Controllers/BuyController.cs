@@ -26,14 +26,13 @@ namespace TicketWindow.Controllers
 
         // GET api/<controller>/5
         // GET request for buying a ticket and getting it back
-        [HttpGet("{JsonData}")]
-        public string Get(int id, string data)
+        [HttpGet("{fl}/{ps}")]
+        public string Get(int id, string fl, string ps)
         {
-            var jdata = JsonConvert.DeserializeObject<ValueTuple<Flight, Passenger>>(data);
-            Flight f = jdata.Item1;
-            Passenger p = jdata.Item2;
+            Flight f = JsonConvert.DeserializeObject<Flight>(fl);
+            Passenger p = JsonConvert.DeserializeObject<Passenger>(ps);
             int passnumber = 0; //number of passengers in the plain
-            Guid flightID = f.reisNumber;
+            int flightID = f.reisNumber;
             string ticketJson = null;
             string scheduleData = ScheduleHttpClient.ScheduleRequest(flightID);
             int scheduleInt = Convert.ToInt32(scheduleData);

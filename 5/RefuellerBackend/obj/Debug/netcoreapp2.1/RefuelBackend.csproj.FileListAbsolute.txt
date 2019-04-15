@@ -9,3 +9,14 @@ C:\Users\snxxy\source\repos\Refuelling\RefuellerBackend\obj\Debug\netcoreapp2.1\
 C:\Users\snxxy\source\repos\Refuelling\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.AssemblyInfo.cs
 C:\Users\snxxy\source\repos\Refuelling\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.dll
 C:\Users\snxxy\source\repos\Refuelling\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.pdb
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\bin\Debug\netcoreapp2.1\RefuelBackend.deps.json
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\bin\Debug\netcoreapp2.1\RefuelBackend.runtimeconfig.json
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\bin\Debug\netcoreapp2.1\RefuelBackend.runtimeconfig.dev.json
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\bin\Debug\netcoreapp2.1\RefuelBackend.dll
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\bin\Debug\netcoreapp2.1\RefuelBackend.pdb
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.csprojAssemblyReference.cache
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.csproj.CoreCompileInputs.cache
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.AssemblyInfoInputs.cache
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.AssemblyInfo.cs
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.dll
+C:\Users\snxxy\Source\Repos\snxxy\airport\5\RefuellerBackend\obj\Debug\netcoreapp2.1\RefuelBackend.pdb

@@ -7,7 +7,7 @@ namespace RefuelBackend
 {
     public sealed class Vehicle
     {
-        Vehicle(){}
+        Vehicle() { }
 
         private static readonly object singleLock = new object();
 

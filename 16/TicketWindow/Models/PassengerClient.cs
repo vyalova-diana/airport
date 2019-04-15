@@ -19,7 +19,7 @@ namespace TicketWindow.Models
         public int timeStart { get; set; }
         public int timeStop { get; set; }
         public int count { get; set; }
-        public Guid reisNumber { get; set; }
+        public int reisNumber { get; set; }
         public Guid plain { get; set; }
         public int registrtionTime { get; set; }
         public int boardingTime { get; set; }

@@ -16,7 +16,7 @@ namespace TicketModel
         //public static int count; //for ticket ID
         public Guid tID;
         public Guid pID; //passenger ID
-        public Guid fID; //flight ID
+        public int fID; //flight ID
         public string city;
         public string pName;
         public string pSecondName;
@@ -88,7 +88,7 @@ namespace TicketModel
                 pID = value;
             }
         }
-        private Guid FID
+        private int FID
         {
             get
             {
@@ -99,7 +99,7 @@ namespace TicketModel
                 fID = value;
             }
         }
-        public Ticket(Guid pID, Guid fID, string city, string pName, string pSecondName, Sex sex)
+        public Ticket(Guid pID, int fID, string city, string pName, string pSecondName, Sex sex)
         {
             tID = Guid.NewGuid();
             PID = pID;

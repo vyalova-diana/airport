@@ -1,0 +1,11 @@
+C:\Users\Masha\source\repos\MyAirport\TicketModel\obj\Debug\netcoreapp2.0\TicketModel.csprojAssemblyReference.cache
+C:\Users\Masha\source\repos\MyAirport\TicketModel\obj\Debug\netcoreapp2.0\TicketModel.csproj.CoreCompileInputs.cache
+C:\Users\Masha\source\repos\MyAirport\TicketModel\obj\Debug\netcoreapp2.0\TicketModel.AssemblyInfoInputs.cache
+C:\Users\Masha\source\repos\MyAirport\TicketModel\obj\Debug\netcoreapp2.0\TicketModel.AssemblyInfo.cs
+C:\Users\Masha\source\repos\MyAirport\TicketModel\bin\Debug\netcoreapp2.0\TicketModel.deps.json
+C:\Users\Masha\source\repos\MyAirport\TicketModel\bin\Debug\netcoreapp2.0\TicketModel.runtimeconfig.json
+C:\Users\Masha\source\repos\MyAirport\TicketModel\bin\Debug\netcoreapp2.0\TicketModel.runtimeconfig.dev.json
+C:\Users\Masha\source\repos\MyAirport\TicketModel\bin\Debug\netcoreapp2.0\TicketModel.dll
+C:\Users\Masha\source\repos\MyAirport\TicketModel\bin\Debug\netcoreapp2.0\TicketModel.pdb
+C:\Users\Masha\source\repos\MyAirport\TicketModel\obj\Debug\netcoreapp2.0\TicketModel.dll
+C:\Users\Masha\source\repos\MyAirport\TicketModel\obj\Debug\netcoreapp2.0\TicketModel.pdb

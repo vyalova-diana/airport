@@ -23,12 +23,12 @@ namespace WebApiAirportNew.Controllers
 
         public Db db;
 
-        [HttpPost("Fligts")] 
+        [HttpPost("Fligts")]
 
         public void Flights([FromBody] List<Flight> fl)
         {
-            Console.WriteLine("{0,10}   |{1,10}   |{2,10}   |{3,10}   |{4,10}   |{5,10}", "Рейс", "Откуда", "Куда", "Время вылета", "Время прилета", "Статус");
-            Console.WriteLine("---------------------------------------------------------------------------");
+            Console.WriteLine("{0,6}   |{1,6}   |{2,6}   |{3,6}   |{4,6}   |{5,10}   |", "Рейс", "Откуда", "Куда", "Время вылета", "Время прилета", "Статус");
+            Console.WriteLine("-----------------------------------------------------------------------------");
             foreach (var item in fl)
             {
                 db.AddFlight(item);
@@ -37,31 +37,10 @@ namespace WebApiAirportNew.Controllers
             }
 
             Console.WriteLine("1");
-
-            //return Ok(new List<Flight>());
-            //HttpResponseMessage response = Client.GetAsync("api/board/Flights").Result;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    HttpContent responseContent = response.Content;
-            //    var json = responseContent.ReadAsStringAsync().Result;
-            //    var flights = JsonConvert.DeserializeObject<List<Flight>>(json);
-            //    db.flights = fl;
-
-            //    foreach (var ms in flights)
-            //    {
-            //        Console.WriteLine(
-            //            $"Id: {ms.Id}," +
-            //            $"From: {ms.From}," +
-            //            $"To: {ms.To}," +
-            //            $"Time: {ms.Time}," +
-            //            $"Status: {ms.Status}");
-            //    }
-            //    return NoContent();
-            //}
-            //else
-            //    return null;
         }
-        //api/board/SendStatus
+
+        
+        //api/board/FlightStatus
         [HttpPost("FlightStatus")]
         public void FlightStatus([FromBody] (int idSt, int st) flightNum)
         {
@@ -73,6 +52,20 @@ namespace WebApiAirportNew.Controllers
             }
 
         }
+
+        //api/board/GetFlights
+        [HttpPost]
+        public ActionResult<List<Flight>> GetFlights()
+        {
+            if (db.flights != null)
+            {
+                return Ok(db.flights);
+            }
+            else
+                return NotFound();
+            
+        }
+
         //api/board/SendStatus/{flightId}
         [HttpGet("{flightId}")] //("SendStatus/{flightId}")
         public ActionResult<int> SendStatus(int flightId)

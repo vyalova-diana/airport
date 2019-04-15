@@ -57,11 +57,11 @@ namespace RefuelBackend
             Console.WriteLine("fuelNeeded is {0} planeid is {1}", fuelNeeded, planeID);
             var time = Vehicle.Instance.CountRefuelTime(fuelNeeded);
 
-            GetGateRequest ggReqv = new GetGateRequest();
+            GetGateRequest ggReqv = new GetGateRequest("Air Facility", planeID);
             string jsonggReqv = JsonConvert.SerializeObject(ggReqv);
             string planePos = MakeApiCall(null, jsonggReqv, null);    //get plane position (gate)
 
-            MoveRequest mReqv = new MoveRequest();
+            MoveRequest mReqv = new MoveRequest("Garage", planePos, "Refueller Serivce", "Refuel1");
             string jsonmReqv = JsonConvert.SerializeObject(mReqv);
             string moveToGatePermission = MakeApiCall(null, jsonmReqv, null);  //request permission to move to gate
 
@@ -117,6 +117,31 @@ namespace RefuelBackend
             }
             //calls to other apis
         }
+
+        private string MakeMoveRequestCall(string host, string jsonMessage)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
+
+
+            streamWriter.Write(jsonMessage);
+            streamWriter.Flush();
+            streamWriter.Close();
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            Console.WriteLine("awaiting response");
+
+            var streamReader = new StreamReader(httpResponse.GetResponseStream());
+            var result = JsonConvert.DeserializeObject<MoveRequestResult>(streamReader.ReadToEnd());
+                
+            Console.WriteLine("Post call to {0} returns {1}", host, result.permission);
+            return result.permission;
+        }
+
+
 
         private string MakeApiCall(string host, string jsonMessage, string requestMethod)
         {

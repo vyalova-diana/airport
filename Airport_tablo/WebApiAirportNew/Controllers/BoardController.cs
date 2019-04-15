@@ -14,7 +14,7 @@ using System.Text;
 
 namespace WebApiAirportNew.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BoardController : ControllerBase
     {
@@ -27,9 +27,13 @@ namespace WebApiAirportNew.Controllers
 
         public void Flights([FromBody] List<Flight> fl)
         {
+            Console.WriteLine("{0,10}   |{1,10}   |{2,10}   |{3,10}   |{4,10}   |{5,10}", "Рейс", "Откуда", "Куда", "Время вылета", "Время прилета", "Статус");
+            Console.WriteLine("---------------------------------------------------------------------------");
             foreach (var item in fl)
             {
                 db.AddFlight(item);
+                Console.WriteLine("{0,10}   |{1,10}   |{2,10}   |{3,10}   |{4,10}   |{5,10}", item.Id, item.From, item.To, item.TimeStart, item.TimeStop, item.TimeStop);
+
             }
 
             Console.WriteLine("1");
@@ -57,48 +61,37 @@ namespace WebApiAirportNew.Controllers
             //else
             //    return null;
         }
-
+        //api/board/SendStatus
         [HttpPost("FlightStatus")]
         public void FlightStatus([FromBody] (int idSt, int st) flightNum)
         {
-            try
-            {
-                var flightSt = db.flights.Find((fp) => fp.Id == flightNum.idSt);
 
+            var flightSt = db.flights.Find((fp) => fp.Id == flightNum.idSt);
+            if (flightSt != null)
+            {
                 flightSt.Status = flightNum.st;
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            Console.WriteLine('1');
 
         }
-
-        [HttpGet("SendStatus")]
-        public void SendStatus(Guid flightId)
+        //api/board/SendStatus/{flightId}
+        [HttpGet("{flightId}")] //("SendStatus/{flightId}")
+        public ActionResult<int> SendStatus(int flightId)
         {
-            int st;
-            try
-            {
-                var flightSt = db.flights.Find((fp) => fp.Id == flightId);
-
-                st = flightSt.Status;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:/");//Данин
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var stringContent = new StringContent(JsonConvert.SerializeObject(st), Encoding.UTF8, "application/json");
-            HttpResponseMessage response = Client.PostAsync("api/values/3", stringContent).Result;
             
+            var flightSt = db.flights.Find((fp) => fp.Id == flightId);
+            
+            if (flightSt != null)
+            {
+                return Ok(flightSt.Status);
+            }
+            else
+                return NotFound(-1);
+   
         }
     }
 }
+//var client = new HttpClient();
+//client.BaseAddress = new Uri("http://localhost:/");//Данин
+//client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+//var stringContent = new StringContent(JsonConvert.SerializeObject(st), Encoding.UTF8, "application/json");
+//HttpResponseMessage response = Client.PostAsync("api/values/3", stringContent).Result;

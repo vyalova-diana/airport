@@ -11,7 +11,9 @@ namespace RefuelBackend
     class WorkingLoop
     {
         private static int controllerCounter = 1;
-        bool invoke = false;
+        private static bool invoke = false;
+        private static bool queue = false;
+        private static List<int> SavedLines = new List<int>();
         public void StartLoop()
         {
             Console.WriteLine("Init loop file manager");
@@ -22,46 +24,62 @@ namespace RefuelBackend
 
             while (true)
             {
-                string s = FileManager.Instance.Get(controllerCounter, "../../../../controllerStatus.txt", false);
-                Console.WriteLine("Got controller input");
-                Console.WriteLine(s);
+                    string s = FileManager.Instance.Get(controllerCounter, "../../../../controllerStatus.txt", false);
+                    Console.WriteLine("Got controller input");
+                    Console.WriteLine(s);
 
-                if (s.Equals("0"))
-                {
-                    Console.WriteLine("no input");
-                    Thread.Sleep(5000);
-                }
-                else if (s.Equals("error"))
-                {
-                    Console.WriteLine("bad input");
-                    Thread.Sleep(5000);
-                }
-                else
-                {
-                    Console.WriteLine("got input");
-                    string[] splitResult = s.Split(' ');
-                    int fuelNeeded = Convert.ToInt32(splitResult[2]);
-                    string planeID = splitResult[1];
-                    Console.WriteLine("starting thread");
+                    if (s.Equals("0"))
+                    {
+                        Console.WriteLine("no input");
+                        Thread.Sleep(5000);
+                    }
+                    else if (s.Equals("error"))
+                    {
+                        Console.WriteLine("bad input");
+                        Thread.Sleep(5000);
+                    }
+                    else if (s.Equals("3"))
+                    {
+                        Console.WriteLine("invoke initiated");
+                        invoke = true;
+                    }
+                    else
+                    {
+                        if (!queue)
+                        {
+                            Console.WriteLine("got input, no queue");
+                            string[] splitResult = s.Split(' ');
+                            int fuelNeeded = Convert.ToInt32(splitResult[2]);
+                            string planeID = splitResult[1];
+                            Console.WriteLine("starting thread");
 
-                    ThreadPool.QueueUserWorkItem(delegate { ExecuteRefuelling(fuelNeeded, planeID); });
+                            ThreadPool.QueueUserWorkItem(delegate { ExecuteRefuelling(fuelNeeded, planeID); });
 
-                    controllerCounter++;
-                }
+                            controllerCounter++;
+                            Thread.Sleep(5000);
+                        }
+                        else
+                        {
+                            SavedLines.Add(controllerCounter);
+                            controllerCounter++;
+                        }
+                    }                
             }
         }
 
         public void ExecuteRefuelling(int fuelNeeded, string planeID)
         {
+            queue = true;
+            Console.WriteLine("Queue started");
             Console.WriteLine("Thread started");
             Console.WriteLine("fuelNeeded is {0} planeid is {1}", fuelNeeded, planeID);
             var time = Vehicle.Instance.CountRefuelTime(fuelNeeded);
 
-            string planePos = MakeGetGateRequestCall(null, planeID);    //get plane position (gate)
+            string planePos = MakeGetGateRequestCall("https://groundcontrol.v2.vapor.cloud/getTFInformation", planeID);    //get plane position (gate)
 
-            MoveRequest mReqv = new MoveRequest("Garage", planePos, "Refueller Serivce", "Refuel1");
-            string jsonmReqv = JsonConvert.SerializeObject(mReqv);
-            string moveToGatePermission = MakeMoveRequestCall(null, planePos);  //request permission to move to gate
+            MoveRequest mvReq = new MoveRequest("Garage", planePos, "Refueller Service", "Refuel1");
+            var jsonmvReq = JsonConvert.SerializeObject(mvReq);
+            string moveToGatePermission = MakeMoveRequestCall("https://groundcontrol.v2.vapor.cloud/askForPermission", jsonmvReq);  //request permission to move to gate
 
             if (moveToGatePermission.Equals("Obtained"))
             {
@@ -69,31 +87,48 @@ namespace RefuelBackend
                 Thread.Sleep(10000);
                 Vehicle.Instance.SetVehicleStatus("3");
                 Thread.Sleep(time);
-                string moveToGaragePermission = MakeMoveRequestCall(null, "Garage");
 
-                if (moveToGaragePermission.Equals("Obtained"))
+                if (SavedLines.Count == 0)
                 {
-                    Vehicle.Instance.SetVehicleStatus("2");
-                    Thread.Sleep(10000);
-                    Vehicle.Instance.SetVehicleStatus("0");
-                }
-                else if (moveToGatePermission.Equals("Queued"))
-                {
-                    Vehicle.Instance.SetVehicleStatus("4");
-                    while (!invoke)
+                    MoveRequest mvBackReq = new MoveRequest(planePos, "Garage", "Refueller Service", "Refuel1"); //request permission to move to garage
+                    var jsonmvbReq = JsonConvert.SerializeObject(mvBackReq);
+                    string moveToGaragePermission = MakeMoveRequestCall("https://groundcontrol.v2.vapor.cloud/askForPermission", jsonmvbReq);
+
+                    if (moveToGaragePermission.Equals("Obtained"))
                     {
-                        Thread.Sleep(1000);
+                        Vehicle.Instance.SetVehicleStatus("2");
+                        Thread.Sleep(10000);
+                        Vehicle.Instance.SetVehicleStatus("0");
                     }
-                    invoke = false;
-                }
-                else if (moveToGatePermission.Equals("Denied"))
-                {
 
+                    else if (moveToGatePermission.Equals("Queued"))
+                    {
+                        Vehicle.Instance.SetVehicleStatus("4");
+                        while (!invoke)
+                        {
+                            Thread.Sleep(1000);
+                        }
+                        invoke = false;
+                        Vehicle.Instance.SetVehicleStatus("2");
+                        Thread.Sleep(10000);
+                        Vehicle.Instance.SetVehicleStatus("0");
+                    }
+                    else if (moveToGatePermission.Equals("Denied"))
+                    {
+
+                    }
+
+                    else
+                    {
+                        //something
+                    }
                 }
+
                 else
                 {
-                    //something
+                    ExecuteRefuelling(100, "1");
                 }
+                
             }
             else if (moveToGatePermission.Equals("Queued"))
             {
@@ -113,10 +148,10 @@ namespace RefuelBackend
             {
                 //something
             }
-            //calls to other apis
+            queue = false;
         }
 
-        private string MakeMoveRequestCall(string host, string planePos)
+        private string MakeMoveRequestCall(string host, string jsonMessage)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(host);
             httpWebRequest.ContentType = "application/json";
@@ -124,10 +159,8 @@ namespace RefuelBackend
 
             var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
 
-            MoveRequest mReqv = new MoveRequest("Garage", planePos, "Refueller Serivce", "Refuel1");
-            string jsonmReqv = JsonConvert.SerializeObject(mReqv);
 
-            streamWriter.Write(jsonmReqv);
+            streamWriter.Write(jsonMessage);
             streamWriter.Flush();
             streamWriter.Close();
 

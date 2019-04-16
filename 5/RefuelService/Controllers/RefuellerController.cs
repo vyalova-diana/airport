@@ -19,13 +19,30 @@ namespace RefuelService.Controllers
         [HttpGet("status")]
         public string Get()
         {
-            return Vehicle.Instance.GetVehicleStatus();
+            try
+            {
+                var a = Vehicle.Instance.GetVehicleStatus();
+                return a;
+            }
+            catch
+            {
+                return "error";
+            }
+
         }
 
         [HttpGet("invoke")]
         public int Invoke()
         {
-            return 1;
+            try
+            {
+                FileManager.Instance.Set("3", "../controllerStatus.txt", true);
+                return 0;
+            }
+            catch
+            {
+                return 1;
+            }
         }
 
         // POST: Refueller
@@ -35,7 +52,7 @@ namespace RefuelService.Controllers
             try
             {
                 string toStatus = "2" + " " + newreqv.planeID.ToString() + " " + newreqv.fuelNeeded.ToString();
-                //FileManager.Instance.Set(toStatus, "../controllerStatus.txt", true);
+                FileManager.Instance.Set(toStatus, "../controllerStatus.txt", true);
                 return 0;
             }
             catch

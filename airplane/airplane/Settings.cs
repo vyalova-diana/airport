@@ -8,6 +8,7 @@ namespace airplane
 {
 	public static class Settings
 	{
-		public static string AirplanesIp = "http://localhost:51704";
+		public static string PassengersIp = "http://localhost:7001";
+		public static string AirplanesIp = "http://localhost:7014";
 	}
 }

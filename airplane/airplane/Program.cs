@@ -20,6 +20,7 @@ namespace airplane
 				Console.Clear();
 				Console.WriteLine("1. Все самолеты");
 				Console.WriteLine("2. Создать самолет с помощью структуры");
+				Console.WriteLine("3. Обновить самолет с помощью структуры");
 
 				var key = Convert.ToInt32(Console.ReadLine());
 
@@ -32,7 +33,7 @@ namespace airplane
 						CreateAirplane();
 						break;
 					case 3:
-						//AddMessage();
+						UpdateAirplane();
 						break;
 					default:
 						continue;
@@ -137,7 +138,7 @@ namespace airplane
 
 						Console.WriteLine("Final airplane:\n" + serializedAirplane);
 
-						SendAirplaneWithPost(serializedAirplane);
+						CreateAirplaneWithPost(serializedAirplane);
 						break;
 					default:
 						continue;
@@ -157,7 +158,7 @@ namespace airplane
 			 */
 		}
 
-		private static void SendAirplaneWithPost(string airplane)
+		private static void CreateAirplaneWithPost(string airplane)
 		{
 			var client = new HttpClient
 			{
@@ -168,6 +169,37 @@ namespace airplane
 			var content = new StringContent(airplane, Encoding.UTF8, "application/json");
 
 			client.PostAsync("/planes/create", content);
+
+			Console.WriteLine("Post-request sent.");
+			Console.ReadLine();
+		}
+
+
+		private static void UpdateAirplane()
+		{
+			Console.Clear();
+			Console.Write("Id самолета: ");
+			var id = Convert.ToInt32(Console.ReadLine());
+
+			Console.WriteLine("Paste Json here:");
+			var airplane = JsonConvert.DeserializeObject<Airplane>(Console.ReadLine());
+			var serializedAirplane = JsonConvert.SerializeObject(airplane);
+
+			UpdateAirplaneWithPost(serializedAirplane, id);
+		}
+
+		private static void UpdateAirplaneWithPost(string airplane, int id)
+		{
+			var client = new HttpClient
+			{
+				BaseAddress = new Uri(Settings.AirplanesIp)
+			};
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+			var content = new StringContent(airplane, Encoding.UTF8, "application/json");
+
+			var url = "/planes/update/" + id;
+			client.PostAsync(url, content);
 
 			Console.WriteLine("Post-request sent.");
 			Console.ReadLine();

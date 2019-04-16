@@ -14,15 +14,15 @@
 	}
 	public interface IRoute
 	{
-		string From { get; set; }
-		string To { get; set; }
-		int TimeStart { get; set; }
-		int TimeStop { get; set; }
-		int? Count { get; set; }
-		int FlightNumber { get; set; }
-		int? PlaneId { get; set; }
-		int? RegistrationTime { get; set; }
-		int? BoardingTime { get; set; }
+		string frm { get; set; }
+		string to { get; set; }
+		int timeStart { get; set; }
+		int timeStop { get; set; }
+		int? count { get; set; }
+		int reisNumber { get; set; }
+		int? plain { get; set; }
+		int? registrtionTime { get; set; }
+		int? boardingTime { get; set; }
 	}
 
 	public class Passenger : IPassenger
@@ -42,16 +42,15 @@
 
 	public class StandardRoute : IRoute
 	{
-		public string From { get; set; }
-		public string To { get; set; }
-		public int TimeStart { get; set; }
-		public int TimeStop { get; set; }
-		public int? Count { get; set; }
-		public int FlightNumber { get; set; }
-		public int? PlaneId { get; set; }
-		public int? RegistrationTime { get; set; }
-		public int? BoardingTime { get; set; }
-
 		public StandardRoute() { }
+		public string frm { get; set; }
+		public string to { get; set; }
+		public int timeStart { get; set; }
+		public int timeStop { get; set; }
+		public int? count { get; set; }
+		public int reisNumber { get; set; }
+		public int? plain { get; set; }
+		public int? registrtionTime { get; set; }
+		public int? boardingTime { get; set; }
 	}
 }

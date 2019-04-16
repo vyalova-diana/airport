@@ -17,21 +17,21 @@ namespace WebApplication.Controllers
 		protected static Json Storage { get; set; } = DatabaseClasses.Json.Instance;
 
 		[HttpGet]
-		public List<IPlane> Get()
+		public List<Airplane> Get()
 		{
 			return Storage.Airplanes;
 		}
 
 		[HttpGet]
 		[Route("create")]
-		public IPlane Create()
+		public Airplane Create()
 		{
 			return Storage.CreateAirplane();
 		}
 
 		[HttpPost]
 		[Route("create")]
-		public IPlane CreateWithBody([FromBody]Airplane airplane)
+		public Airplane CreateWithBody([FromBody]Airplane airplane)
 		{
 			var serialized = JsonConvert.SerializeObject(airplane);
 			return Storage.CreateAirplane(serialized);
@@ -39,22 +39,22 @@ namespace WebApplication.Controllers
 
 		[HttpGet]
 		[Route("remove/{id}")]
-		public string Remove(int id)
+		public int Remove(int id)
 		{
 			try
 			{
 				Storage.RemoveAirplane(id);
-				return "Plane with Id = " + id + " successfully removed!";
+				return 1;
 			}
 			catch
 			{
-				return "Error occured. Try again?";
+				return 0;
 			}
 		}
 
 		[HttpGet]
 		[Route("{id}")]
-		public IPlane Get(int id)
+		public Airplane Get(int id)
 		{
 			if (Storage.Airplanes == null) return null;
 			if (Storage.Airplanes.Count == 0) return null;
@@ -67,7 +67,7 @@ namespace WebApplication.Controllers
 
 		[HttpPost]
 		[Route("update/{id}")]
-		public IPlane Update([FromBody]Airplane airplane, int id)
+		public Airplane Update([FromBody]Airplane airplane, int id)
 		{
 			var serialized = JsonConvert.SerializeObject(airplane);
 			try
@@ -77,6 +77,20 @@ namespace WebApplication.Controllers
 			catch
 			{
 				return null;
+			}
+		}
+
+		[HttpGet]
+		[Route("update_status/{id}/{status}")]
+		public int UpdateStatus(int id, int status)
+		{
+			try
+			{
+				return Storage.UpdateStatus(id, status);
+			}
+			catch
+			{
+				return 0;
 			}
 		}
 

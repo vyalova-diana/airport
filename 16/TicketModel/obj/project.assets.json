@@ -670,11 +670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketModel\\TicketModel.csproj",
+      "projectUniqueName": "C:\\Users\\Masha\\airport\\16\\TicketModel\\TicketModel.csproj",
       "projectName": "TicketModel",
-      "projectPath": "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketModel\\TicketModel.csproj",
+      "projectPath": "C:\\Users\\Masha\\airport\\16\\TicketModel\\TicketModel.csproj",
       "packagesPath": "C:\\Users\\Masha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketModel\\obj\\",
+      "outputPath": "C:\\Users\\Masha\\airport\\16\\TicketModel\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

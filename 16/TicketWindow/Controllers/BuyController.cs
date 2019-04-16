@@ -26,11 +26,11 @@ namespace TicketWindow.Controllers
 
         // GET api/<controller>/5
         // GET request for buying a ticket and getting it back
-        [HttpGet("{fl}/{ps}")]
-        public string Get(int id, string fl, string ps)
+        [HttpGet("{ps}/{fl}")]
+        public string Get(int id, string ps, string fl)
         {
             Flight f = JsonConvert.DeserializeObject<Flight>(fl);
-            Passenger p = JsonConvert.DeserializeObject<Passenger>(ps);
+            Passport p = JsonConvert.DeserializeObject<Passport>(ps);
             int passnumber = 0; //number of passengers in the plain
             int flightID = f.reisNumber;
             string ticketJson = null;
@@ -39,7 +39,7 @@ namespace TicketWindow.Controllers
             if (scheduleInt >= 0)
             {
                 passnumber = scheduleInt;
-                if (TicketStorage.getInstance().fingPassenger(p.guid))
+                if (TicketStorage.getInstance().fingPassenger(p.Guid))
                 {
                     return "2"; //passenger with this id has already buy a ticket
                 }
@@ -47,7 +47,7 @@ namespace TicketWindow.Controllers
                 {
                     if (TicketStorage.getInstance().flightCount(flightID) < passnumber)
                     {
-                        Ticket t = new Ticket(p.guid, flightID, f.to, p.Surname, p.GivenNames, p.sex);
+                        Ticket t = new Ticket(p.Guid, flightID, f.to, p.Surname, p.GivenNames, p.Sex);
                         TicketStorage.getInstance().Add(t);
                         ticketJson = JsonConvert.SerializeObject(t);
                         return ticketJson;
@@ -70,7 +70,7 @@ namespace TicketWindow.Controllers
                 }
                 else
                 {
-                    return "5";
+                    return "1";
                 }
             }
         }

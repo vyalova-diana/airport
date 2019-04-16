@@ -7,8 +7,8 @@ namespace TicketModel
 {
     public enum Sex
     {
-        Female,
-        Male
+        Male,
+        Female
     }
     public class Ticket
     {

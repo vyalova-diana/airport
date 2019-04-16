@@ -689,11 +689,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketList\\TicketList.csproj",
+      "projectUniqueName": "C:\\Users\\Masha\\airport\\16\\TicketList\\TicketList.csproj",
       "projectName": "TicketList",
-      "projectPath": "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketList\\TicketList.csproj",
+      "projectPath": "C:\\Users\\Masha\\airport\\16\\TicketList\\TicketList.csproj",
       "packagesPath": "C:\\Users\\Masha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketList\\obj\\",
+      "outputPath": "C:\\Users\\Masha\\airport\\16\\TicketList\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -712,8 +712,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketModel\\TicketModel.csproj": {
-              "projectPath": "C:\\Users\\Masha\\source\\repos\\MyAirport\\TicketModel\\TicketModel.csproj"
+            "C:\\Users\\Masha\\airport\\16\\TicketModel\\TicketModel.csproj": {
+              "projectPath": "C:\\Users\\Masha\\airport\\16\\TicketModel\\TicketModel.csproj"
             }
           }
         }

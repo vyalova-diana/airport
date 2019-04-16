@@ -13,7 +13,7 @@ namespace FlightPassengerApi
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
-                .UseUrls("http://localhost:5000/;https://localhost:5001/")
+                .UseUrls("http://localhost:7001/")
                 .UseStartup<Startup>();
     }
 }

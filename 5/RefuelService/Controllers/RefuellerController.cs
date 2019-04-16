@@ -51,7 +51,7 @@ namespace RefuelService.Controllers
         {
             try
             {
-                string toStatus = "2" + " " + newreqv.planeID.ToString() + " " + newreqv.fuelNeeded.ToString();
+                string toStatus = "2" + " " + newreqv.planeID.ToString() + " " + newreqv.fuelNeeded.ToString(); 
                 FileManager.Instance.Set(toStatus, "../controllerStatus.txt", true);
                 return 0;
             }

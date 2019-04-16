@@ -28,7 +28,7 @@ namespace TestingRequests
             var host = "http://localhost:57741/Refueller/status";
             string str = null;
             var req = new StreamReader(HttpWebRequest.Create(host).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
+            str = req.ReadToEnd(); 
             Console.WriteLine("Status is: {0}", str);
 
 

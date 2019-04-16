@@ -40,7 +40,6 @@ namespace RefuelService
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

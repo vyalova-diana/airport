@@ -12,8 +12,6 @@ namespace RefuelBackend
     {
         private static int controllerCounter = 1;
         private static bool invoke = false;
-        private static bool queue = false;
-        private static List<int> SavedLines = new List<int>();
         public void StartLoop()
         {
             Console.WriteLine("Init loop file manager");
@@ -45,8 +43,6 @@ namespace RefuelBackend
                     }
                     else
                     {
-                        if (!queue)
-                        {
                             Console.WriteLine("got input, no queue");
                             string[] splitResult = s.Split(' ');
                             int fuelNeeded = Convert.ToInt32(splitResult[2]);
@@ -57,39 +53,31 @@ namespace RefuelBackend
 
                             controllerCounter++;
                             Thread.Sleep(5000);
-                        }
-                        else
-                        {
-                            SavedLines.Add(controllerCounter);
-                            controllerCounter++;
-                        }
-                    }                
+                    }
+                                   
             }
         }
 
         public void ExecuteRefuelling(int fuelNeeded, string planeID)
         {
-            queue = true;
             Console.WriteLine("Queue started");
             Console.WriteLine("Thread started");
             Console.WriteLine("fuelNeeded is {0} planeid is {1}", fuelNeeded, planeID);
             var time = Vehicle.Instance.CountRefuelTime(fuelNeeded);
 
             string planePos = MakeGetGateRequestCall("https://groundcontrol.v2.vapor.cloud/getTFInformation", planeID);    //get plane position (gate)
-
-            MoveRequest mvReq = new MoveRequest("Garage", planePos, "Refueller Service", "Refuel1");
-            var jsonmvReq = JsonConvert.SerializeObject(mvReq);
-            string moveToGatePermission = MakeMoveRequestCall("https://groundcontrol.v2.vapor.cloud/askForPermission", jsonmvReq);  //request permission to move to gate
-
-            if (moveToGatePermission.Equals("Obtained"))
+            if (!planePos.Equals("error"))
             {
-                Vehicle.Instance.SetVehicleStatus("2");
-                Thread.Sleep(10000);
-                Vehicle.Instance.SetVehicleStatus("3");
-                Thread.Sleep(time);
+                MoveRequest mvReq = new MoveRequest("Garage", planePos, "Refueller Service", "Refuel1");
+                var jsonmvReq = JsonConvert.SerializeObject(mvReq);
+                string moveToGatePermission = MakeMoveRequestCall("https://groundcontrol.v2.vapor.cloud/askForPermission", jsonmvReq);//request permission to move to gate
 
-                if (SavedLines.Count == 0)
+                if (moveToGatePermission.Equals("Obtained"))
                 {
+                    Vehicle.Instance.SetVehicleStatus("2");
+                    Thread.Sleep(10000);
+                    Vehicle.Instance.SetVehicleStatus("3");
+                    Thread.Sleep(time);
                     MoveRequest mvBackReq = new MoveRequest(planePos, "Garage", "Refueller Service", "Refuel1"); //request permission to move to garage
                     var jsonmvbReq = JsonConvert.SerializeObject(mvBackReq);
                     string moveToGaragePermission = MakeMoveRequestCall("https://groundcontrol.v2.vapor.cloud/askForPermission", jsonmvbReq);
@@ -117,38 +105,34 @@ namespace RefuelBackend
                     {
 
                     }
-
-                    else
-                    {
-                        //something
-                    }
                 }
+                else if (moveToGatePermission.Equals("Queued"))
+                {
+                    Vehicle.Instance.SetVehicleStatus("1");
+                    while (!invoke)
+                    {
+                        Thread.Sleep(1000);
+                    }
+                    invoke = false;
+                    Vehicle.Instance.SetVehicleStatus("2");
+                    Thread.Sleep(10000);
+                    Vehicle.Instance.SetVehicleStatus("0");
 
+                }
+                else if (moveToGatePermission.Equals("Denied"))
+                {
+
+                }
                 else
                 {
-                    ExecuteRefuelling(100, "1");
+                    //something
                 }
-                
-            }
-            else if (moveToGatePermission.Equals("Queued"))
-            {
-                Vehicle.Instance.SetVehicleStatus("1");
-                while (!invoke)
-                {
-                    Thread.Sleep(1000);
-                }
-                invoke = false;
-
-            }
-            else if (moveToGatePermission.Equals("Denied"))
-            {
-
             }
             else
             {
-                //something
+                Console.WriteLine("error in gate call");
             }
-            queue = false;
+           
         }
 
         private string MakeMoveRequestCall(string host, string jsonMessage)
@@ -195,7 +179,14 @@ namespace RefuelBackend
             var result = JsonConvert.DeserializeObject<GetGateRequsetResult>(streamReader.ReadToEnd());
 
             Console.WriteLine("Post call (get gate request) to {0} returns {1}", host, result.locationCode);
-            return result.locationCode;
+            if (result.status.Equals("Unknown"))
+            {
+                return "error";
+            }
+            else
+            {
+                return result.locationCode;
+            }
         }
 
         

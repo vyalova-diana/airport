@@ -19,6 +19,8 @@ namespace RefuelService
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .UseKestrel()
+            .UseUrls("http://localhost:7005")
                 .UseStartup<Startup>();
     }
 }

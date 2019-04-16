@@ -8,9 +8,8 @@ namespace RefuelBackend
     public sealed class Vehicle
     {
         Vehicle() { }
-
+        private static int carState = 0;
         private static readonly object singleLock = new object();
-
         private static Vehicle instance = null;
 
         public static Vehicle Instance

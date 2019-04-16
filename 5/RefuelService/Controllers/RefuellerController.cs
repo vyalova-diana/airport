@@ -51,9 +51,16 @@ namespace RefuelService.Controllers
         {
             try
             {
-                string toStatus = "2" + " " + newreqv.planeID.ToString() + " " + newreqv.fuelNeeded.ToString(); 
-                FileManager.Instance.Set(toStatus, "../controllerStatus.txt", true);
-                return 0;
+                if (Vehicle.Instance.GetVehicleStatus().Equals("0"))
+                {
+                    string toStatus = "2" + " " + newreqv.planeID.ToString() + " " + newreqv.fuelNeeded.ToString();
+                    FileManager.Instance.Set(toStatus, "../controllerStatus.txt", true);
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
             }
             catch
             {

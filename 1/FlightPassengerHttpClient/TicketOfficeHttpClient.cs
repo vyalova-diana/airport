@@ -12,7 +12,7 @@ namespace FlightPassengerHttpClient
 
         public TicketOfficeHttpClient(HttpClient httpClient)
         {
-            httpClient.BaseAddress = new Uri("http://localhost:44367/");
+            httpClient.BaseAddress = new Uri("http://localhost:4436/");
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             Client = httpClient;
         }

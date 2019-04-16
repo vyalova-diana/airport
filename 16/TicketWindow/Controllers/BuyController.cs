@@ -30,7 +30,7 @@ namespace TicketWindow.Controllers
         public string Get(int id, string ps, string fl)
         {
             Flight f = JsonConvert.DeserializeObject<Flight>(fl);
-            Passport p = JsonConvert.DeserializeObject<Passport>(ps);
+            FlightPassenger p = JsonConvert.DeserializeObject<FlightPassenger>(ps);
             int passnumber = 0; //number of passengers in the plain
             int flightID = f.reisNumber;
             string ticketJson = null;
@@ -39,7 +39,7 @@ namespace TicketWindow.Controllers
             if (scheduleInt >= 0)
             {
                 passnumber = scheduleInt;
-                if (TicketStorage.getInstance().fingPassenger(p.Guid))
+                if (TicketStorage.getInstance().fingPassenger(p.Passport.Guid))
                 {
                     return "2"; //passenger with this id has already buy a ticket
                 }
@@ -47,7 +47,7 @@ namespace TicketWindow.Controllers
                 {
                     if (TicketStorage.getInstance().flightCount(flightID) < passnumber)
                     {
-                        Ticket t = new Ticket(p.Guid, flightID, f.to, p.Surname, p.GivenNames, p.Sex);
+                        Ticket t = new Ticket(p.Passport.Guid, flightID, f.to, p.Passport.Surname, p.Passport.GivenNames, p.Passport.Sex);
                         TicketStorage.getInstance().Add(t);
                         ticketJson = JsonConvert.SerializeObject(t);
                         return ticketJson;

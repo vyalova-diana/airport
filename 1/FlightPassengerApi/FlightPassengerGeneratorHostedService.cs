@@ -49,7 +49,7 @@ namespace FlightPassengerApi
                     _db.flightPassengers.Add(flightPassenger);
                     flightPassenger.Start();
                 });
-                await Task.Delay(1000);
+                await Task.Delay(5000);
             } 
         }
         public override Task StopAsync(CancellationToken cancellationToken)

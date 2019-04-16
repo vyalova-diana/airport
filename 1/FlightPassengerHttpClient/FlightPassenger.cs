@@ -42,6 +42,30 @@ namespace FlightPassengerHttpClient
         public Ticket Ticket { get; set; }
         public List<Flight> Flights { get; set; }
         public Guid BusId { get; set; }
+        private void DeleteFlightPassengerFromDBInError(Guid fpGuid)
+        {
+            try
+            {
+                if (!myServiceHttpClient.DeleteFlightPassenger(fpGuid))
+                {
+                    Console.WriteLine("{0} Error Deleting from Database", Passport.Surname);
+                }
+                else
+                {
+                    Console.WriteLine("{0} Deleted from BD successfully", Passport.Surname);
+                    fsm.SetState(ErrorLeave);
+                    fsm.Update();
+                }
+            }
+            catch (AggregateException ae)
+            {
+                Console.WriteLine("{0} My Server Isn't Working {1}", Passport.Surname, ae.Message);
+            }
+        }
+        private void ErrorLeave()
+        {
+            Console.WriteLine("{0} Error trying fly, Leaving Airport in Some Error", Passport.Surname);
+        }
         public void Start()
         {
             fsm.SetState(GetFlights);
@@ -63,15 +87,18 @@ namespace FlightPassengerHttpClient
                 else
                 {
                     Console.WriteLine("{0} GetRaces request is not OK", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
             }
             catch (JsonException je)
             {
                 Console.WriteLine("{0} GetRecaes Can't Desir Json {1}", Passport.Surname, je.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
             catch (AggregateException hre)
             {
                 Console.WriteLine("{0} GetRaces Server Isn't Working {1}", Passport.Surname, hre.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
         }
         private void BuyTicket()
@@ -93,15 +120,18 @@ namespace FlightPassengerHttpClient
                 else
                 {
                     Console.WriteLine("{0} BuyTicket request is not success", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
             }
             catch (JsonException je)
             {
                 Console.WriteLine("{0} BuyTicket can't desir json {1}", Passport.Surname, je.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} BuyTicket Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
         }
         private void WaitRegistrationStart()
@@ -131,33 +161,43 @@ namespace FlightPassengerHttpClient
             Console.WriteLine("{0} Waiting Registration", Passport.Surname);
             try
             {
+                /*0 Ожидается регистрация 
+1 Идет регистрация 
+2 Началась посадка 
+3 Посадка закончилась 
+4 Самолет вылетел 
+5 Самолет прилетел*/
                 var response = boardHttpClient.GetRegistrationStatus(Ticket.fID);
-                if (response == RegistrationStatus.InProgress)
+                if (response == 1)
                 {
                     fsm.SetState(Registration);
                     fsm.Update();
                 }
-                else if (response == RegistrationStatus.IsOver)
+                else if (response >= 2)
                 {
                     Console.WriteLine("{0} Registration is over", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
-                else if (response == RegistrationStatus.NotStarted)
+                else if (response == 0)
                 {
                     Console.WriteLine("{0} Registration is not started yet", Passport.Surname);
                     fsm.Update();
                 }
-                else if (response == 0)
+                else if (response == -1)
                 {
                     Console.WriteLine("{0} Board RegistrationStatus Request is Not Ok", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
             }
             catch (JsonException je)
             {
                 Console.WriteLine("{0} WaitRegistration can't desir json {1}", Passport.Surname, je.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} WaitRegistration Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
 
         }
@@ -176,11 +216,13 @@ namespace FlightPassengerHttpClient
                 else
                 {
                     Console.WriteLine("{0} Error RegistrationService", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
             }
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} RegistrationService Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
         }
         private void EnterThePassengerStorage()
@@ -196,11 +238,13 @@ namespace FlightPassengerHttpClient
                 else
                 {
                     Console.WriteLine("{0} Error Entering Passenger Storage", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
             }
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} PassengerStorage Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
         }
         private void WaitBusArriveToPassengerStorage()
@@ -234,6 +278,7 @@ namespace FlightPassengerHttpClient
                 if (!passengerBusHttpClient.EnterTheBus(Passport.Guid, BusId))
                 {
                     Console.WriteLine("{0} Error entering Bus", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
                 else
                 {
@@ -244,6 +289,7 @@ namespace FlightPassengerHttpClient
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} Bus Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
         }
         private void WaitBusFinishMotionToTheAirplane()
@@ -276,6 +322,7 @@ namespace FlightPassengerHttpClient
                 if (!airplaneHttpClient.EnterTheAirplane(this))
                 {
                     Console.WriteLine("{0} Error entering Airport", Passport.Surname);
+                    DeleteFlightPassengerFromDBInError(Passport.Guid);
                 }
                 else
                 {
@@ -286,6 +333,7 @@ namespace FlightPassengerHttpClient
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} Airplane Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromDBInError(Passport.Guid);
             }
         }
         private void WaitTakeoff()
@@ -332,7 +380,7 @@ namespace FlightPassengerHttpClient
         }
         private void End()
         {
-            Console.WriteLine("{0} Ends, Thank you!", Passport.Surname);
+            Console.WriteLine("{0} Ends fly success, Thank you!", Passport.Surname);
         }
         
         public void StartFromAirplane()
@@ -391,6 +439,7 @@ namespace FlightPassengerHttpClient
                 if (!passengerBusHttpClient.EnterTheLandBus(Passport.Guid, BusId))
                 {
                     Console.WriteLine("{0} Error entering Land Bus, Flight GUID: {1}", Passport.Surname, Ticket.fID);
+                    DeleteFlightPassengerFromLandDBInError(Passport.Guid);
                 }
                 else
                 {
@@ -401,6 +450,7 @@ namespace FlightPassengerHttpClient
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} Land Bus Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromLandDBInError(Passport.Guid);
             }
         }
         private void WaitBusFinishMotionToTheLandPassengerStorage()
@@ -437,11 +487,13 @@ namespace FlightPassengerHttpClient
                 else
                 {
                     Console.WriteLine("{0} Error Entering Land Passenger Storage", Passport.Surname);
+                    DeleteFlightPassengerFromLandDBInError(Passport.Guid);
                 }
             }
             catch (AggregateException ae)
             {
                 Console.WriteLine("{0} Land PassengerStorage Server Isn't Working {1}", Passport.Surname, ae.Message);
+                DeleteFlightPassengerFromLandDBInError(Passport.Guid);
             }
         }
         private void LeaveLandPassengerStorage()
@@ -469,7 +521,32 @@ namespace FlightPassengerHttpClient
         }
         private void EndArrive()
         {
-            Console.WriteLine("{0} Seems like that's all yet, GOING HOME FROM AIRPORT, FLIGHT GUID: {1}", Passport.Surname, Ticket.fID);
+            Console.WriteLine("{0} Seems like that's all yet, GOING HOME FROM AIRPORT Successfully, FLIGHT GUID: {1}", Passport.Surname, Ticket.fID);
+        }
+        private void DeleteFlightPassengerFromLandDBInError(Guid fpGuid)
+        {
+            Thread.Sleep(10000);
+            try
+            {
+                if (!myServiceHttpClient.DeleteArrivedFlightPassenger(Passport.Guid))
+                {
+                    Console.WriteLine("{0} Error Deleting arrived fp from Database", Passport.Surname);
+                }
+                else
+                {
+                    Console.WriteLine("{0} Deleted arrived passenger from BD successfully", Passport.Surname);
+                    fsm.SetState(ErrorLeaveLand);
+                    fsm.Update();
+                }
+            }
+            catch (AggregateException ae)
+            {
+                Console.WriteLine("{0} My Server Isn't Working {1}", Passport.Surname, ae.Message);
+            }
+        }
+        private void ErrorLeaveLand()
+        {
+            Console.WriteLine("{0} Leaving Airport With Landing Error", Passport.Surname);
         }
     }
 }

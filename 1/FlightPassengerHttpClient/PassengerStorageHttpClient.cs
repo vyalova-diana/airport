@@ -13,7 +13,7 @@ namespace FlightPassengerHttpClient
 
         public PassengerStorageHttpClient(HttpClient httpClient)
         {
-            httpClient.BaseAddress = new Uri("https://localhost:44363/");
+            httpClient.BaseAddress = new Uri("http://localhost:44363/");
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             Client = httpClient;
         }

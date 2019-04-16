@@ -23,7 +23,7 @@ namespace FlightPassengerHttpClient
 
         public BoardHttpClient(HttpClient httpClient)
         {
-            httpClient.BaseAddress = new Uri("https://localhost:44367/");
+            httpClient.BaseAddress = new Uri("http://localhost:44367/");
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             Client = httpClient;
         }

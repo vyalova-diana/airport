@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FlightPassengerHttpClient;
 using Bogus;
-using System.Threading;
 
 namespace FlightPassengerApi.Controllers
 {

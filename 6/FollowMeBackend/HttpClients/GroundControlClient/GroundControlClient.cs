@@ -13,7 +13,7 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
         public static StatusUpdateResponse StatusUpdate(Status stat)
         {
             var stringContent = new StringContent(JsonConvert.SerializeObject(stat), Encoding.UTF8, "application/json");
-            var host = "http://localhost:****/updateTFStatus/" + stringContent;
+            var host = "https://groundcontrol.v2.vapor.cloud/updateTFStatus/" + stringContent;
             string str = null;
             var req = new StreamReader(WebRequest.Create(host).GetResponse().GetResponseStream());
             str = req.ReadToEnd();
@@ -25,7 +25,7 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
         {
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(r), Encoding.UTF8, "application/json");
-            var host = "http://localhost:****/getTFInformation/" + stringContent;
+            var host = "https://groundcontrol.v2.vapor.cloud/getTFInformation/" + stringContent;
             string str = null;
             var req = new StreamReader(WebRequest.Create(host).GetResponse().GetResponseStream());
             str = req.ReadToEnd();
@@ -37,7 +37,7 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
         {
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(r), Encoding.UTF8, "application/json");
-            var host = "http://localhost:****/askForPermission/" + stringContent;
+            var host = "https://groundcontrol.v2.vapor.cloud/askForPermission/" + stringContent;
             string str = null;
             var req = new StreamReader(WebRequest.Create(host).GetResponse().GetResponseStream());
             str = req.ReadToEnd();

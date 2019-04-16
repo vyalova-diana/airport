@@ -19,6 +19,8 @@ namespace FollowMeService
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseUrls("http://localhost:7006/")
                 .UseStartup<Startup>();
     }
 }

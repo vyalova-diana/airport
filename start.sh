@@ -17,7 +17,7 @@ rm 14.txt
 rm 15.txt
 rm 16.txt
 killall dotnet
-python3 -m http.server &
+python3 -m http.server 3221 &
 cd ..
 ruby 4/app.rb 2>&1 | tee logs/3.txt;
 python3 3/app.py 2>&1 | tee logs/4.txt &

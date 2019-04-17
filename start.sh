@@ -23,7 +23,10 @@ python3 3/app.py 2>&1 | tee logs/4.txt &
 python3 8/app.py 2>&1 | tee logs/8.txt &
 dotnet run --project ./2/BusApi/BusApi.csproj 2>&1 | tee logs/2.txt &
 dotnet run --project ./1/FlightPassengerApi/FlightPassengerApi.csproj 2>&1 | tee logs/1.txt &
+sudo chmod 777 ./5/controllerStatus.txt
+sudo chmod 777 ./5/vehicleStatus.txt
 dotnet run --project ./5/RefuellerBackend/RefuelBackend.csproj 2>&1 | tee logs/5.txt &
+dotnet run --project ./5/RefuelService/RefuelService.csproj 2>&1 | tee logs/5.txt &
 dotnet run --project ./6/FollowMeService/FollowMeService.csproj 2>&1 | tee logs/6.txt &
 dotnet run --project ./13/WebApi/WebApi/WebApi.csproj 2>&1 | tee logs/13.txt1 &
 dotnet run --project ./16/TicketWindow/TicketWindow.csproj 2>&1 | tee logs/16.txt &

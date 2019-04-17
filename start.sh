@@ -22,7 +22,7 @@ cd ..
 ruby 4/app.rb 2>&1 | tee logs/3.txt \
 && python3 3/app.py 2>&1 | tee logs/4.txt \
 && python3 8/app.py 2>&1 | tee logs/8.txt \
-&& dotnet run --project ./1/FlightPassengerApi/FlightPassengerApi.csproj 2>&1 | tee logs/1.txt && \
+&& dotnet run --project ./1/FlightPassengerApi/FlightPassengerApi.csproj 2>&1 | tee logs/1.txt \
 && dotnet run --project ./2/BusApi/BusApi.csproj 2>&1 | tee logs/2.txt \
 && dotnet run --project ./2/BusApi/BusApi.csproj 2>&1 | tee logs/2.txt \
 && dotnet run --project ./5/RefuellerBackend/RefuelBackend.csproj 2>&1 | tee logs/5.txt \

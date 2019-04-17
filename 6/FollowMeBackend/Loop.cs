@@ -191,15 +191,34 @@ namespace FollowMeBackend
             while (flag)
             {
 
-                var resp = AirplaneClient.AreYouReady(planeID);
+                var resp = AirplaneClient.GetStatus(planeID);
 
-                if (resp == "0")
+                if (resp != "1")
                 {
                     logger.Error("Airplane is not ready to go");
                     Thread.Sleep(5000);
                 }
                 else
                 {
+                    //обновить статус самолёта на 2(прикреплён)
+                    var podflag = true;
+                    while (podflag)
+                    {
+
+                        var resp2 = AirplaneClient.StatusUpdate(planeID, "2");
+
+                        if (resp2 == "0")
+                        {
+                            logger.Error("Direct airplane StatusUpdate");
+                            Thread.Sleep(5000);
+                        }
+                        else
+                        {
+
+                            logger.Info("Direct airplane StatusUpdate: OK 2");
+                            podflag = false;
+                        }
+                    }
 
                     logger.Info("Airplane ready to go");
                     flag = false;
@@ -288,8 +307,28 @@ namespace FollowMeBackend
                 }
             }
             //через таймаут поддерживать связь с самолётом(Move)
-            
+            for (int i = 0; i < 5; i++)
+            {
+                flag = true;
+                while (flag)
+                {
 
+                    var resp = AirplaneClient.IsFollowing(planeID);
+
+                    if (resp == "0")
+                    {
+                        logger.Error("Airplane " + planeID + "is not following"+"step#" + i.ToString());
+                        Thread.Sleep(5000);
+                    }
+                    else
+                    {
+
+                        logger.Info("Airplane " + planeID + "is following"+ "step#"+ i.ToString());
+                        flag = false;
+                    }
+                }
+            }
+            
 
             //7 поменять статус на "idle" у гейта
             flag = true;
@@ -331,7 +370,7 @@ namespace FollowMeBackend
                 else
                 {
                     
-                    logger.Info("Direct airplane StatusUpdate: OK");
+                    logger.Info("Direct airplane StatusUpdate: OK 3");
                     flag = false;
                 }
             }

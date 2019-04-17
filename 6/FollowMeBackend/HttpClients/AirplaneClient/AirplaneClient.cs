@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -16,13 +17,25 @@ namespace FollowMeBackend.HttpClients
             str = req.ReadToEnd();
             return str;
         }
-        public static string AreYouReady(string id)
+        public static string GetStatus(string id)
         {
-            var host = "http://localhost:7014/plane/ready_followme/" + id.ToString();
+            var host = "http://localhost:7014/planes/" + id.ToString();
             string str = null;
             var req = new StreamReader(HttpWebRequest.Create(host).GetResponse().GetResponseStream());
             str = req.ReadToEnd();
+            var jdata = JsonConvert.DeserializeObject<AirplaneStatusResp>(str);
+            return jdata.Status;
+            
+        }
+        public static string IsFollowing(string id)
+        {
+            var host = "http://localhost:7014//planes/is_following/" + id.ToString();
+            string str = null;
+            var req = new StreamReader(HttpWebRequest.Create(host).GetResponse().GetResponseStream());
+            str = req.ReadToEnd();
+
             return str;
+
         }
     }
 }

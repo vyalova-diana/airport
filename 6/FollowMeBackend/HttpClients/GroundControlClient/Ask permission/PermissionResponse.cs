@@ -7,6 +7,6 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
     public class PermissionResponse
     {
 
-        public string permission;
+        public string permission { get; set; }
     }
 }

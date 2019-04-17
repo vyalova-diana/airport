@@ -56,7 +56,7 @@ namespace Airport
                 }
                 catch
                 {
-                    //    flag = false;
+                        flag = false;
                 }
             }
             logger.Info("Текущий город:" + curTown.town);
@@ -117,7 +117,7 @@ namespace Airport
                 catch
                 {
                     logger.Error("Не удалось прикрепить самолет");
-                    //flag = false;
+                    flag = false;
                 }
             }
 
@@ -153,7 +153,7 @@ namespace Airport
                 {
                     logger.Error("Не удалось связаться с табло");
 
-                    //flag = false;
+                    flag = false;
                 }
             }
 
@@ -269,7 +269,7 @@ namespace Airport
                         catch
                         {
                             logger.Error("Служба регистрации и/или табло не доступны-> регистрация не началась->пробуем еще раз. Рейс " + reis.reisNumber.ToString());
-                            //r = false;
+                            r = false;
                         }
                         if (!pp)
                         {
@@ -288,7 +288,7 @@ namespace Airport
                             catch
                             {
                                 logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.-> не начал подготовку->пробуем еще раз.");
-                                // pp = false;
+                                 pp = false;
                             }
                         }
 
@@ -314,7 +314,7 @@ namespace Airport
                             catch
                             {
                                 logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.-> не начал посадку пассажиров.->пробуем еще раз.");
-                                // pb = false;
+                                 pb = false;
                             }
                         }
                         if (pb)
@@ -329,7 +329,7 @@ namespace Airport
                             catch
                             {
                                 logger.Error("Служба регистрации и/или табло не доступны->открытm посадку не удалось на рейс " + reis.reisNumber.ToString() + " ->пробуем еще раз.");
-                                //b = false;
+                                b = false;
                             }
                         }
                     }
@@ -356,7 +356,7 @@ namespace Airport
                             catch
                             {
                                 pf = false;
-                                // s = false;
+                                s = false;
                                 logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.->Не улетел->пробуем еще раз.");
 
                             }
@@ -409,7 +409,7 @@ namespace Airport
                         }
                         catch
                         {
-                            //s = false;
+                            s = false;
                             logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", создать не удалось.->Не прилетит");
 
                         }
@@ -445,11 +445,7 @@ namespace Airport
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            // Load the JSON for the Result into a JObject
             JObject jo = JObject.Load(reader);
-
-            // Read the properties which will be used as constructor parameters
-
             string frm = (string)jo["frm"];
             string to = (string)jo["to"];
             int timeStart = (int)jo["timeStart"];
@@ -459,12 +455,7 @@ namespace Airport
             int? plain = (int?)jo["plain"];
             int? registrtionTime = (int?)jo["registrtionTime"];
             int? boardingTime = (int?)jo["boardingTime"];
-            // Construct the Result object using the non-default constructor
             Reis result = new Reis(frm, to, timeStart, timeStop, count, reisNumber, plain, registrtionTime, boardingTime);
-
-            // (If anything else needs to be populated on the result object, do that here)
-
-            // Return the result
             return result;
         }
         public override bool CanWrite
@@ -491,20 +482,10 @@ namespace Airport
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            // Load the JSON for the Result into a JObject
             JObject jo = JObject.Load(reader);
-
-            // Read the properties which will be used as constructor parameters
-
             int Id = (int)jo["Id"];
             int PassengersMax = (int)jo["PassengersMax"];
-
-            // Construct the Result object using the non-default constructor
             Plane ep = new Plane(Id, PassengersMax);
-
-            // (If anything else needs to be populated on the result object, do that here)
-
-            // Return the result
             return ep;
         }
         public override bool CanWrite

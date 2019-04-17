@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Text;
 
 namespace FlightPassengerHttpClient
@@ -23,7 +21,7 @@ namespace FlightPassengerHttpClient
 
         public BoardHttpClient(HttpClient httpClient)
         {
-            httpClient.BaseAddress = new Uri("https://localhost:44367/");
+            httpClient.BaseAddress = new Uri("http://localhost:44367/");
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             Client = httpClient;
         }

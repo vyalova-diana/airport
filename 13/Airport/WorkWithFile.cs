@@ -29,17 +29,19 @@ namespace Airport
         private MyTime()
         {
             curMin = 0;
-            towns.Add(new Coordinate(56, 38, "Москва"));
-            towns.Add(new Coordinate(60, 30, "Санкт-Питербург"));
-            towns.Add(new Coordinate(41, -74, "Нью-Йорк"));
-            towns.Add(new Coordinate(36, 140, "Токио"));
-            towns.Add(new Coordinate(30, 31, "Каир"));
-            towns.Add(new Coordinate(1, 104, "Сингапур"));
-            towns.Add(new Coordinate(38, -122, "Сан-Франциско"));
-            towns.Add(new Coordinate(49, 2, "Париж"));
-            towns.Add(new Coordinate(51, 0, "Лондон"));
-            towns.Add(new Coordinate(65, 178, "Анадырь"));
-            towns.Add(new Coordinate(37, -8, "Фаро"));
+            towns.Add(new Coordinate(56, 38, "Moscow"));
+            towns.Add(new Coordinate(60, 30, "Saint Petersburg"));
+            towns.Add(new Coordinate(41, -74, "New York"));
+            towns.Add(new Coordinate(36, 140, "{Tokyo"));
+            towns.Add(new Coordinate(30, 31, "Cairo"));
+            towns.Add(new Coordinate(1, 104, "Singapore"));
+            towns.Add(new Coordinate(38, -122, "San Francisco"));
+            towns.Add(new Coordinate(49, 2, "Paris"));
+            towns.Add(new Coordinate(51, 0, "London"));
+            towns.Add(new Coordinate(37, -8, "Faro"));
+            towns.Add(new Coordinate(60, 150, "Magadan"));
+            towns.Add(new Coordinate(67, 64, "Vorkuta"));
+            towns.Add(new Coordinate(69, 33, "Murmansk"));
             int q = r(0, towns.Count);
             curTown = towns.ElementAt(q);
             bool flag = false;

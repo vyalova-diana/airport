@@ -10,7 +10,6 @@ using System.Text;
 
 namespace BusClasses
 {
-    
     public class Bus
     {
         public int busId;
@@ -252,7 +251,7 @@ namespace BusClasses
                     done = true;
                 }
                 catch (Exception e) { }
-            }          
+            }
         }
         public void ClearAll()
         {
@@ -527,7 +526,7 @@ namespace BusClasses
                     }
                     reader.Close();
                     reader = new StreamReader(filepathbusmoving);
-            
+
                     int k = 0;
                     while (!reader.EndOfStream)
                     {

@@ -19,6 +19,7 @@ namespace WebApiAirportNew
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://localhost:7015/")
                 .UseStartup<Startup>();
     }
 }

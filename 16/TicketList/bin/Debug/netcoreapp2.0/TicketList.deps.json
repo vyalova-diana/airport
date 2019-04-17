@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "TicketList/1.0.0": {
+        "dependencies": {
+          "TicketModel": "1.0.0"
+        },
+        "runtime": {
+          "TicketList.dll": {}
+        }
+      },
+      "TicketModel/1.0.0": {
+        "runtime": {
+          "TicketModel.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TicketList/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TicketModel/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

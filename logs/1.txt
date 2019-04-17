@@ -1,0 +1,3 @@
+C:\Program Files\dotnet\sdk\2.1.602\Sdks\Microsoft.NET.Sdk\targets\Microsoft.NET.TargetFrameworkInference.targets(137,5): error NETSDK1045: текущий пакет SDK для .NET не поддерживает целевой объект .NET Core 2.2. Выберите .NET Core 2.1 или более раннюю версию либо используйте версию пакета SDK для .NET, которая поддерживает .NET Core 2.2. [D:\GIT\airport\1\FlightPassengerApi\FlightPassengerApi.csproj]
+
+Ошибка сборки. Устраните ошибки сборки и повторите попытку.

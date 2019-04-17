@@ -1,0 +1,17 @@
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\bin\Debug\netcoreapp2.1\WebApiAirportNew.deps.json
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\bin\Debug\netcoreapp2.1\WebApiAirportNew.runtimeconfig.json
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\bin\Debug\netcoreapp2.1\WebApiAirportNew.runtimeconfig.dev.json
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\bin\Debug\netcoreapp2.1\WebApiAirportNew.dll
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\bin\Debug\netcoreapp2.1\WebApiAirportNew.pdb
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\bin\Debug\netcoreapp2.1\DataBase.dll
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\bin\Debug\netcoreapp2.1\DataBase.pdb
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.csprojAssemblyReference.cache
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.csproj.CoreCompileInputs.cache
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.RazorAssemblyInfo.cache
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.RazorAssemblyInfo.cs
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.AssemblyInfoInputs.cache
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.AssemblyInfo.cs
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.RazorTargetAssemblyInfo.cache
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.csproj.CopyComplete
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.dll
+C:\Users\Алина\source\repos\Airport_tablo\WebApiAirportNew\obj\Debug\netcoreapp2.1\WebApiAirportNew.pdb

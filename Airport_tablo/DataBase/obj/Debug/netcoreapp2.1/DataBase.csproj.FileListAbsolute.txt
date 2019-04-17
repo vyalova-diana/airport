@@ -1,0 +1,11 @@
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\obj\Debug\netcoreapp2.1\DataBase.csprojAssemblyReference.cache
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\obj\Debug\netcoreapp2.1\DataBase.csproj.CoreCompileInputs.cache
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\obj\Debug\netcoreapp2.1\DataBase.AssemblyInfoInputs.cache
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\obj\Debug\netcoreapp2.1\DataBase.AssemblyInfo.cs
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\bin\Debug\netcoreapp2.1\DataBase.deps.json
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\bin\Debug\netcoreapp2.1\DataBase.runtimeconfig.json
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\bin\Debug\netcoreapp2.1\DataBase.runtimeconfig.dev.json
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\bin\Debug\netcoreapp2.1\DataBase.dll
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\bin\Debug\netcoreapp2.1\DataBase.pdb
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\obj\Debug\netcoreapp2.1\DataBase.dll
+C:\Users\Алина\source\repos\Airport_tablo\DataBase\obj\Debug\netcoreapp2.1\DataBase.pdb

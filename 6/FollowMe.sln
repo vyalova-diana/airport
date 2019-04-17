@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowMeBackend", "FollowMeBackend\FollowMeBackend.csproj", "{93725571-DE4F-4A81-8CB8-C81C5636FDCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowMeService", "FollowMeService\FollowMeService.csproj", "{DAC822B6-2A8F-4A29-B2E0-6BC31CCB054E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93725571-DE4F-4A81-8CB8-C81C5636FDCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93725571-DE4F-4A81-8CB8-C81C5636FDCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93725571-DE4F-4A81-8CB8-C81C5636FDCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93725571-DE4F-4A81-8CB8-C81C5636FDCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAC822B6-2A8F-4A29-B2E0-6BC31CCB054E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC822B6-2A8F-4A29-B2E0-6BC31CCB054E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC822B6-2A8F-4A29-B2E0-6BC31CCB054E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC822B6-2A8F-4A29-B2E0-6BC31CCB054E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0B8F01A-82F7-4622-A860-A285D8B0475B}
+	EndGlobalSection
+EndGlobal

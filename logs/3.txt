@@ -1,0 +1,26 @@
+/Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require': dlopen(/Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/x86_64-darwin18/openssl.bundle, 9): Library not loaded: /usr/local/opt/openssl@1.1/lib/libssl.1.1.dylib (LoadError)
+  Referenced from: /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/x86_64-darwin18/openssl.bundle
+  Reason: image not found - /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/x86_64-darwin18/openssl.bundle
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/openssl.rb:13:in `<top (required)>'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/gems/ruby-2.6.0/gems/rack-2.0.6/lib/rack/session/cookie.rb:1:in `<top (required)>'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/gems/ruby-2.6.0/gems/sinatra-2.0.5/lib/sinatra/base.rb:1776:in `<class:Base>'
+	from /Users/ivangulakov/.rvm/gems/ruby-2.6.0/gems/sinatra-2.0.5/lib/sinatra/base.rb:894:in `<module:Sinatra>'
+	from /Users/ivangulakov/.rvm/gems/ruby-2.6.0/gems/sinatra-2.0.5/lib/sinatra/base.rb:22:in `<top (required)>'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/gems/ruby-2.6.0/gems/sinatra-2.0.5/lib/sinatra/main.rb:1:in `<top (required)>'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from /Users/ivangulakov/.rvm/gems/ruby-2.6.0/gems/sinatra-2.0.5/lib/sinatra.rb:1:in `<top (required)>'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:130:in `require'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:130:in `rescue in require'
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:34:in `require'
+	from 4/app.rb:1:in `<main>'
+/Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require': cannot load such file -- sinatra (LoadError)
+	from /Users/ivangulakov/.rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+	from 4/app.rb:1:in `<main>'

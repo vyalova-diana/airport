@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -13,7 +12,7 @@ namespace FlightPassengerHttpClient
 
         public AirplaneHttpClient(HttpClient httpClient)
         {
-            httpClient.BaseAddress = new Uri("https://localhost:44367/");
+            httpClient.BaseAddress = new Uri("http://localhost:44367/");
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             Client = httpClient;
         }

@@ -1,0 +1,11 @@
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\bin\Debug\netcoreapp2.1\CheckInDataBase.deps.json
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\bin\Debug\netcoreapp2.1\CheckInDataBase.runtimeconfig.json
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\bin\Debug\netcoreapp2.1\CheckInDataBase.runtimeconfig.dev.json
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\bin\Debug\netcoreapp2.1\CheckInDataBase.dll
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\bin\Debug\netcoreapp2.1\CheckInDataBase.pdb
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\obj\Debug\netcoreapp2.1\CheckInDataBase.csprojAssemblyReference.cache
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\obj\Debug\netcoreapp2.1\CheckInDataBase.csproj.CoreCompileInputs.cache
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\obj\Debug\netcoreapp2.1\CheckInDataBase.AssemblyInfoInputs.cache
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\obj\Debug\netcoreapp2.1\CheckInDataBase.AssemblyInfo.cs
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\obj\Debug\netcoreapp2.1\CheckInDataBase.dll
+c:\users\user\source\repos\Airport_Check_In\CheckInDataBase\obj\Debug\netcoreapp2.1\CheckInDataBase.pdb

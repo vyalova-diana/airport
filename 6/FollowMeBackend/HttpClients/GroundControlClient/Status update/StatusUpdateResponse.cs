@@ -6,7 +6,7 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
 {
     public class StatusUpdateResponse
     {
-        public string success;
+        public string error;
         public string description;
     }
 }

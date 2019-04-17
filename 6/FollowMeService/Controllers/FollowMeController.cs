@@ -13,14 +13,14 @@ namespace FollowMeService.Controllers
     [ApiController]
     public class FollowMeController : ControllerBase
     {
-        // GET: Refueller/status
+        
         [HttpGet("status")]
         public string Get()
         {
             return JsonConvert.SerializeObject(Vehicle.Instance.GetVehicleStatus());
         }
 
-        // POST: Refueller
+        
         [HttpPost]
         public string Post(string planeID)
         {

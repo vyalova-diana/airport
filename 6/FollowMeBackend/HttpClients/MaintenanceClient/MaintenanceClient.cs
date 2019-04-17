@@ -8,15 +8,15 @@ namespace FollowMeBackend.HttpClients.MaintenanceClient
 {
     class MaintenanceClient
     {
-        public static void ReportStatus(Guid id)
+        public static string ReportStatus(Guid id)
         {
            
             var host = "http://localhost:1488/cargos/reportStatus/" + id.ToString();
-            //string str = null;
+            string str = null;
             var req = new StreamReader(WebRequest.Create(host).GetResponse().GetResponseStream());
-            //str = req.ReadToEnd();
-            //var jdata = JsonConvert.DeserializeObject<StatusUpdateResponse>(str);
+            str = req.ReadToEnd();
 
+            return str;
             
             
             

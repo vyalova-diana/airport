@@ -9,11 +9,13 @@ namespace FollowMeBackend
     {
         Vehicle() {
             stat = new Status();
+            stat.service = "Follow Me";
             stat.identifier = "fo8ll8ow";
             stat.locationCode = "Garage";
-            stat.status = "Idle";
+            stat.status = "Busy";
 
-            var str_stat = stat.ToString();
+            var str_stat = stat.identifier+" "+stat.locationCode+" "+stat.status;
+
             FileManager.Instance.Set(str_stat, "../../../../vehicleStatus.txt", false); //перезапись
         }
 
@@ -52,7 +54,8 @@ namespace FollowMeBackend
             stat.locationCode = st.locationCode;
             stat.status= st.status;
 
-            var str_stat = stat.ToString();
+            
+            var str_stat = stat.identifier + " " + stat.locationCode + " " + stat.status;
             FileManager.Instance.Set(str_stat, "../../../../vehicleStatus.txt", false); //перезапись
         }
 

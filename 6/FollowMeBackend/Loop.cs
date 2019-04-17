@@ -15,7 +15,7 @@ namespace FollowMeBackend
 
             logger = log;
             logger.Info("Init loop file manager");
-            logger.Info(Vehicle.Instance.GetVehicleStatus().ToString());
+            logger.Info("Location: "+Vehicle.Instance.GetVehicleStatus().locationCode+" Status:"+ Vehicle.Instance.GetVehicleStatus().status);
 
             logger.Info("Starting loop");
 
@@ -35,9 +35,10 @@ namespace FollowMeBackend
                 }
                 else if (s.Equals("empty line"))
                 {
-                    logger.Info("=> stay 0");
                     FileManager.Instance.Set("0", "../../../../controllerStatus.txt", true);
-                   
+
+                    logger.Info("=> stay 0");
+                    
                     Thread.Sleep(5000);
                 }
                 else
@@ -48,6 +49,7 @@ namespace FollowMeBackend
 
                     ThreadPool.QueueUserWorkItem(delegate { ExecuteEscort(planeID); });
                     controllerCounter++;
+                    Thread.Sleep(5000);
                 }
                 
             }
@@ -59,14 +61,14 @@ namespace FollowMeBackend
             logger.Info("Thread started");
             logger.Info("Airplane ID is {0}", planeID);
 
-            //начальный статус "в гараже" idle, потом гейт idle
+            //7 начальный статус "в гараже" Busy
             var flag = true;
             while (flag)
             {
 
                 var resp = GroundControlClient.StatusUpdate(Vehicle.Instance.stat);
 
-                if (resp.success == "false")
+                if (resp.error == "true")
                 {
                     logger.Error("StatusUpdate: " + resp.description);
                     Thread.Sleep(5000);
@@ -74,13 +76,13 @@ namespace FollowMeBackend
                 else
                 {
                     
-                    logger.Info("StatusUpdate: " + resp.success + (Vehicle.Instance.stat).ToString());
+                    logger.Info("StatusUpdate: OK" + "Location: " + Vehicle.Instance.GetVehicleStatus().locationCode + " Status:" + Vehicle.Instance.GetVehicleStatus().status);
                     flag = false;
                 }
             }
 
 
-            //найти где самолёт getTFInformation
+            //7 найти где самолёт getTFInformation
             
             flag = true;
             var loc = "";
@@ -104,7 +106,7 @@ namespace FollowMeBackend
                 }
             }
 
-            //запросить разрешение на передвижение к самолёту
+            //7 запросить разрешение на передвижение к самолёту
             flag = true;
             var req_perm = new PermissionRequest
             {
@@ -131,20 +133,20 @@ namespace FollowMeBackend
                 }
             }
 
-            //поменять статус на "в дороге" к самолёту
+            //7 поменять статус на "в дороге" к самолёту
             flag = true;
             var stat= new Status
             {
                 identifier=Vehicle.Instance.stat.identifier,
                 locationCode=req_perm.from+"-"+req_perm.to,
-                status= "On road"
+                status= "Moving"
             };
             while (flag)
             {
 
                 var resp = GroundControlClient.StatusUpdate(stat);
 
-                if (resp.success == "false")
+                if (resp.error == "true")
                 {
                     logger.Error("StatusUpdate: " + resp.description);
                     Thread.Sleep(5000);
@@ -152,18 +154,57 @@ namespace FollowMeBackend
                 else
                 {
                     Vehicle.Instance.SetVehicleStatus(stat);
-                    logger.Info("StatusUpdate: " + resp.success + (Vehicle.Instance.stat).ToString());
+                    
+                    logger.Info("StatusUpdate: OK"  + "Location: " + Vehicle.Instance.GetVehicleStatus().locationCode + " Status:" + Vehicle.Instance.GetVehicleStatus().status);
                     flag = false;
                 }
             }
             //таймаут(еду до самолёта)
-            logger.Info("On road....");
-            Thread.Sleep(10000);
-            //контакт с самолётом
+            logger.Info("Moving....");
+            Thread.Sleep(7000);
+            //7 поменять статус на "Busy" на ВПП
+            flag = true;
+            var stat1 = stat;
+            stat1.status = "Busy";
+            stat1.locationCode = req_perm.to;
+            
+            while (flag)
+            {
 
+                var resp = GroundControlClient.StatusUpdate(stat1);
 
-            /////////////////////////////////////////////////////
+                if (resp.error == "true")
+                {
+                    logger.Error("StatusUpdate: " + resp.description);
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    Vehicle.Instance.SetVehicleStatus(stat1);
 
+                    logger.Info("StatusUpdate: OK"  + "Location: " + stat1.locationCode + " Status:" + stat1.status);
+                    flag = false;
+                }
+            }
+            //14 контакт с самолётом /plane/ready_followme/*id*
+            flag = true;
+            while (flag)
+            {
+
+                var resp = AirplaneClient.AreYouReady(planeID);
+
+                if (resp == "0")
+                {
+                    logger.Error("Airplane is not ready to go");
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+
+                    logger.Info("Airplane ready to go");
+                    flag = false;
+                }
+            }
 
             //запросить разрешение на движение к гейту
             flag = true;
@@ -196,16 +237,17 @@ namespace FollowMeBackend
             flag = true;
             var stat2 = new Status
             {
-                identifier = Vehicle.Instance.stat.identifier,
+                service= Vehicle.Instance.GetVehicleStatus().service,
+                identifier = Vehicle.Instance.GetVehicleStatus().identifier,
                 locationCode = req_perm2.from + "-" + req_perm2.to,
-                status = "On road"
+                status = "Moving"
             };
             while (flag)
             {
 
                 var resp = GroundControlClient.StatusUpdate(stat2);
 
-                if (resp.success == "false")
+                if (resp.error == "true")
                 {
                     logger.Error("StatusUpdate: " + resp.description);
                     Thread.Sleep(5000);
@@ -213,14 +255,43 @@ namespace FollowMeBackend
                 else
                 {
                     Vehicle.Instance.SetVehicleStatus(stat2);
-                    logger.Info("StatusUpdate: " + resp.success + (Vehicle.Instance.stat).ToString());
+                    logger.Info("StatusUpdate: OK"  + "Location: " + stat2.locationCode + " Status:" + stat2.status);
+                   
                     flag = false;
                 }
             }
-            //через таймаут поддерживать связь с самолётом
-            //сообщить самолёту, что приехали
-            //сообщить 8, что выполнено
-            //поменять статус на "idle" у гейта
+            //поменять статус самолёта  на "в дороге" к гейту
+            flag = true;
+            var stat_pl1 = new Status
+            {
+                service= "Air Facility",
+                identifier = planeID,
+                locationCode = req_perm2.from + "-" + req_perm2.to,
+                status = "Moving"
+            };
+            while (flag)
+            {
+
+                var resp = GroundControlClient.StatusUpdate(stat_pl1);
+
+                if (resp.error == "true")
+                {
+                    logger.Error("StatusUpdate: " + "Airplane:" + planeID);
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    
+                    logger.Info("StatusUpdate: OK" +"Airplane:" + planeID + "Location: " + stat_pl1.locationCode + " Status:" + stat_pl1.status);
+
+                    flag = false;
+                }
+            }
+            //через таймаут поддерживать связь с самолётом(Move)
+            
+
+
+            //7 поменять статус на "idle" у гейта
             flag = true;
             var stat3 = new Status
             {
@@ -233,7 +304,7 @@ namespace FollowMeBackend
 
                 var resp = GroundControlClient.StatusUpdate(stat3);
 
-                if (resp.success == "false")
+                if (resp.error == "true")
                 {
                     logger.Error("StatusUpdate: " + resp.description);
                     Thread.Sleep(5000);
@@ -241,14 +312,130 @@ namespace FollowMeBackend
                 else
                 {
                     Vehicle.Instance.SetVehicleStatus(stat3);
-                    logger.Info("StatusUpdate: " + resp.success + (Vehicle.Instance.stat).ToString());
+                    logger.Info("StatusUpdate: OK"  + "Location: " + stat3.locationCode + " Status:" + stat3.status);
+                    flag = false;
+                }
+            }
+            //14 Сообщить самолёту что приехали (статус 3)
+            flag = true;
+            while (flag)
+            {
+
+                var resp = AirplaneClient.StatusUpdate(planeID, "3");
+
+                if (resp == "0")
+                {
+                    logger.Error("Direct airplane StatusUpdate");
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    
+                    logger.Info("Direct airplane StatusUpdate: OK");
+                    flag = false;
+                }
+            }
+            //7 поменять статус самолёта на "Busy" у гейта
+            flag = true;
+            var stat_pl2 = stat3;
+            stat_pl2.service = "Air Facility";
+            stat_pl2.identifier = planeID;
+            stat_pl2.status = "Busy";
+            while (flag)
+            {
+
+                var resp = GroundControlClient.StatusUpdate(stat_pl2);
+
+                if (resp.error == "true")
+                {
+                    logger.Error("StatusUpdate: " + resp.description);
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    
+                    logger.Info("StatusUpdate: OK"+ "Airplane:" + planeID + "Location: " + stat_pl2.locationCode + " Status:" + stat_pl2.status);
                     flag = false;
                 }
             }
 
+            //сообщить 8, что выполнено
+            //
+            //
+            //
+            //
+            //
 
+            //7 запросить разрешение уехать в гараж
+            flag = true;
+            var req_perm3 = req_perm2;
+            req_perm3.from = stat3.locationCode;
+            req_perm3.to = "Garage";
 
+            while (flag)
+            {
 
+                var resp = GroundControlClient.AskPermission(req_perm3);
+
+                if (resp.permission == "Denied")
+                {
+                    logger.Error("Permission from " + req_perm3.from + " to " + req_perm3.to + " DENIED");
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    logger.Info("Permission from: " + req_perm3.from + " to " + req_perm3.to +" "+ resp.permission);
+
+                    flag = false;
+                }
+            }
+            //обновить статус на Moving в гараж
+            flag = true;
+            var stat4 = stat2;
+            stat4.locationCode = stat3.locationCode + "-" + req_perm3.to;
+            
+            while (flag)
+            {
+
+                var resp = GroundControlClient.StatusUpdate(stat4);
+
+                if (resp.error == "true")
+                {
+                    logger.Error("StatusUpdate: " + resp.description);
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    Vehicle.Instance.SetVehicleStatus(stat4);
+                    logger.Info("StatusUpdate: OK"+ "Location: " + stat4.locationCode + " Status:" + stat4.status);
+                    flag = false;
+                }
+            }
+            //таймаут(еду в гараж)
+            logger.Info("Moving....");
+            Thread.Sleep(7000);
+            //обновить статус Idle  в гараже
+            flag = true;
+            var stat5 = stat3;
+            stat5.locationCode = req_perm3.to;
+            
+            while (flag)
+            {
+
+                var resp = GroundControlClient.StatusUpdate(stat5);
+
+                if (resp.error == "true")
+                {
+                    logger.Error("StatusUpdate: " + resp.description);
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    Vehicle.Instance.SetVehicleStatus(stat5);
+                    logger.Info("StatusUpdate: OK" + "Location: " + stat5.locationCode + " Status:" + stat5.status);
+                    flag = false;
+                }
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace FollowMeBackend
     {
  
 
-        public string service = "Follow Me";
+        public string service { get; set; }
 
         public string  identifier{ get; set; }
         public string locationCode { get; set; }

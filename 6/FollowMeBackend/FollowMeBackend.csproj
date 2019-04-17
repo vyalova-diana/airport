@@ -11,8 +11,4 @@
     <PackageReference Include="NLog.Config" Version="4.6.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="HttpClients\AirplaneClient\" />
-  </ItemGroup>
-
 </Project>

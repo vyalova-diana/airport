@@ -13,37 +13,9 @@ namespace BusApi.Controllers
     [Route("bus")]
     public class MessagesController : Controller
     {
-
-        [Route("getpassanger/{pasid}")]//ВНЕШКА  гет для забора пассажира из автобуса. если 1, то успешно. если 0, то нет такого пассажира в автобусе
-        public int Getpas(int pasid)
-        {
-            var filepassangers = new FileCSV();
-            var ListOfPassangers = filepassangers.ReadFromCSVPassanger();
-            var k = 0;
-            for (var i = 0; i < ListOfPassangers.Count(); i++)
-                if (ListOfPassangers[i].passangerId == pasid)
-                {
-                    k++;
-                    filepassangers.RemoveFromCSVPassanger(pasid);
-                }
-            if (k > 0)
-                return 1;
-            else
-                return 0;
-        }
-
-        [Route("clear")]//гет для очистки файлов
-        public void GetClear()
-        {
-            var file = new FileCSV();
-            file.ClearAll();
-        }
-
-
-
-        [Route("newtask/{plane}")] //ВНЕШКА  этот пост используется сторонними системами, для постановки задания
-        public string Post(int plane)
-        {
+        [Route("newtask/{plane}/{dest}")] //ВНЕШКА  этот пост используется сторонними системами, для постановки задания
+        public string Post(int plane, int dest)
+        {   
             var bl = new BusLog();
             var Busses = new List<Bus>();
             var filebusses = new FileCSV();
@@ -67,9 +39,19 @@ namespace BusApi.Controllers
                 bl.WriteToLog("Для самолета " + plane + " назначен автобус. ID автобуса - " + Busses[i].busId + ". Вместимость - 30 пассажиров.");
                 var filetasks = new FileCSV();
                 Busses[i].planeId = plane;
+                Busses[i].dest = dest;
                 filetasks.ChangeBusStatusCSV(Busses[i].busId);
-                Busses[i].AllowMoving("BGR", "GT1");
-                Busses[i].SendLocation("BGR", "GT1", "Moving");
+                if (dest == 0)
+                {
+                    Busses[i].AllowMoving("BGR", "GT1");
+                    Busses[i].SendLocation("BGR", "GT1", "Moving");
+                }
+                else
+                {
+                    Busses[i].FindPlaneLocationCode();
+                    Busses[i].AllowMoving("BGR", Busses[i].planelocationcode);
+                    Busses[i].SendLocation("BGR", Busses[i].planelocationcode, "Moving");
+                }
                 Thread busthread;
                 busthread = new Thread(new ThreadStart(Busses[i].Execute));
                 busthread.Start();

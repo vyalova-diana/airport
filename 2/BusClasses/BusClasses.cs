@@ -17,6 +17,7 @@ namespace BusClasses
         public int flightId;
         public int planeId;
         public int cntpas;
+        public int dest;
         public string planelocationcode;
 
         public BusLog bl = new BusLog();
@@ -133,6 +134,19 @@ namespace BusClasses
             HttpResponseMessage response = client.PostAsync("api/flightpassengers/busarrivedtoairplane", stringContent).Result;
         }
 
+        public void BusArivedToGate()
+        {
+            byte[] bytes = new byte[16];
+            BitConverter.GetBytes(this.busId).CopyTo(bytes, 0);
+
+            Guid busId = new Guid(bytes);
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:7001");
+            var stringContent = new StringContent(JsonConvert.SerializeObject(busId), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = client.PostAsync("api/flightpassengers/busarrivedtolandedpassengerstorage", stringContent).Result;
+        }
+
         public void EndMoving()
         {
             var file = new FileCSV();
@@ -153,9 +167,18 @@ namespace BusClasses
                 + " необходимо перевезти " + cntformoving + " пассажиров.");
 
             Thread.Sleep(10000); //еду
-            bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
-                + " прибыл к GT1");
-            SendLocation("BGR", "GT1", "Busy");
+            if (this.dest == 0)
+            {
+                bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
+                  + " прибыл к GT1");
+                SendLocation("BGR", "GT1", "Busy");
+            }
+            else
+            {
+                bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
+                  + " прибыл к " + this.planelocationcode);
+                SendLocation("BGR", this.planelocationcode, "Busy");
+            }
 
 
             //удостоверилась, что сели в автобус все пассажиры
@@ -168,39 +191,70 @@ namespace BusClasses
             bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
                 + " принял на борт всех пассажиров.");
 
-            SendLocation("BGR", "GT1", "Idle");
-            //запрос на передвижение
-            FindPlaneLocationCode();
-            AllowMoving("GT1", this.planelocationcode);
-            SendLocation("GT1", this.planelocationcode, "Moving");
+            if (this.dest == 0)
+                SendLocation("BGR", "GT1", "Idle");
+            else
+                SendLocation("BGR", this.planelocationcode, "Idle");
+            //запрос на передвижение'
+            if (this.dest == 0)
+            {
+                FindPlaneLocationCode();
+                AllowMoving("GT1", this.planelocationcode);
+                SendLocation("GT1", this.planelocationcode, "Moving");
+            }
+            else
+            {
+                AllowMoving(this.planelocationcode, "GT1");
+                SendLocation(this.planelocationcode, "GT1", "Moving");
+            }
             Thread.Sleep(10000);//еду
-            bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
-                + " прибыл к " + this.planelocationcode + ".");
-            SendLocation("GT1", this.planelocationcode, "Busy");
+            if (this.dest == 0)
+            {
+                bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
+                    + " прибыл к " + this.planelocationcode + ".");
+                SendLocation("GT1", this.planelocationcode, "Busy");
+            }
+            else
+            {
+                bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
+                    + " прибыл к " + "GT1" + ".");
+                SendLocation(this.planelocationcode, "GT1", "Busy");
+            }
             //окончание движения
             EndMoving();
 
             //оповещаю пассажиров в автобусе, что пора сваливать.
-            BusArivedToAirplane();
-
-            //проверяю, что все пассажиры вышли из автобуса
-            checkcntpas = -1;
-            while (checkcntpas != 0)
-            {
-                checkcntpas = file.ReadFromCSVPassanger(this.busId);
-                Thread.Sleep(500);
-            }
+            if (dest == 0)
+                BusArivedToAirplane();
+            else
+                BusArivedToGate();
+            Thread.Sleep(1000);
+            file.RemoveFromCSVPassangerInBus(this.busId);
             bl.WriteToLog("Автобус " + this.busId + ", движущийся к самолету " + this.planeId
                 + " пуст. Все пассажиры вышли из автобуса");
 
-            SendLocation("GT1", this.planelocationcode, "Idle");
-            //запрос на передвижение
-            AllowMoving(this.planelocationcode, "SGR");
-            SendLocation(this.planelocationcode, "SGR", "Moving");
-            Thread.Sleep(1000);
-            bl.WriteToLog("Автобус " + this.busId + " прибыл на стоянку");
-            SendLocation(this.planelocationcode, "SGR", "Busy");
-            SendLocation(this.planelocationcode, "SGR", "Idle");
+            if (dest == 0)
+            {
+                SendLocation("GT1", this.planelocationcode, "Idle");
+                //запрос на передвижение
+                AllowMoving(this.planelocationcode, "BGR");
+                SendLocation(this.planelocationcode, "BGR", "Moving");
+                Thread.Sleep(1000);
+                bl.WriteToLog("Автобус " + this.busId + " прибыл на стоянку");
+                SendLocation(this.planelocationcode, "BGR", "Busy");
+                SendLocation(this.planelocationcode, "BGR", "Idle");
+            }
+            else
+            {
+                SendLocation(this.planelocationcode, "GT1", "Idle");
+                //запрос на передвижение
+                AllowMoving("GT1", "BGR");
+                SendLocation("GT1", "BGR", "Moving");
+                Thread.Sleep(1000);
+                bl.WriteToLog("Автобус " + this.busId + " прибыл на стоянку");
+                SendLocation("GT1", "BGR", "Busy");
+                SendLocation("GT1", "BGR", "Idle");
+            }
             //окончание движения
             EndMoving();
             //освободила автобус
@@ -364,6 +418,32 @@ namespace BusClasses
             for (int i = 0; i < Passangers.Count; i++)
             {
                 if (Passangers[i].passangerId == pasId)
+                {
+                    Passangers.RemoveAt(i);
+                }
+            }
+            bool done = false;
+            while (done == false)
+            {
+                try
+                {
+                    File.WriteAllText(filepathpassengers, String.Empty);
+                    foreach (Passanger pas in Passangers)
+                    {
+                        WriteToCSVPassanger(pas);
+                    }
+                    done = true;
+                }
+                catch (Exception e) { }
+            }
+
+        } //убираю пасссажира по id
+        public void RemoveFromCSVPassangerInBus(int busId)
+        {
+            var Passangers = ReadFromCSVPassanger();
+            for (int i = 0; i < Passangers.Count; i++)
+            {
+                if (Passangers[i].busId == busId)
                 {
                     Passangers.RemoveAt(i);
                 }

@@ -33,7 +33,7 @@ def getCarBy(ID):
     raise Exception("No car with such ID")
 
 def carArrivedWaiter():
-    
+
 @app.route('/car/<CAR_ID>/sendToAirplane/<PLAIN_ID>', methods=["POST"])
 def sendToAirplane(PLAIN_ID):
     if CAR_ID is None:

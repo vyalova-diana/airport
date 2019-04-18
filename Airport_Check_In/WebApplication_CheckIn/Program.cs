@@ -18,7 +18,8 @@ namespace WebApplication_CheckIn
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args).
+                .UseUrls("http://localhost:44304/")
                 .UseStartup<Startup>();
     }
 }

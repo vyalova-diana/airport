@@ -1,1 +1,14 @@
+<<<<<<< HEAD
 bash: python3: command not found
+=======
+Traceback (most recent call last):
+  File "8/app.py", line 8, in <module>
+    @app.route("/car/*ID*/sendToStorage", methods=['POST'])
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/flask/app.py", line 1250, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/flask/app.py", line 66, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/flask/app.py", line 1221, in add_url_rule
+    'existing endpoint function: %s' % endpoint)
+AssertionError: View function mapping is overwriting an existing endpoint function: hello
+>>>>>>> upstream/master

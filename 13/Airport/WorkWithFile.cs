@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +19,6 @@ namespace Airport
 {
     public class MyTime
     {
-        public static Logger logger = LogManager.GetCurrentClassLogger();
         public List<Reis> reises;
         List<Coordinate> towns = new List<Coordinate>();
         Coordinate curTown;
@@ -58,10 +57,10 @@ namespace Airport
                 }
                 catch
                 {
-                        flag = false;
+                    flag = false;
                 }
             }
-            logger.Info("Текущий город:" + curTown.town);
+            Console.WriteLine("Текущий город:" + curTown.town);
             Start(1);
         }
 
@@ -75,15 +74,13 @@ namespace Airport
         }
         public void Start(int b)
         {
-            bool flag = false;
-            DB db = new DB();
-            if (b == 1)
-                reises = db.ReadFile();
-            if ((b == 1 && reises.Count() == 0) || b > 1)
+            try
             {
-                reises = GenerateReises();
-
+                reises.Clear();
             }
+            catch { };
+            bool flag = false;
+            reises = GenerateReises();
             while (!flag)
             {
                 try
@@ -114,25 +111,18 @@ namespace Airport
 
 
                     }
-                    logger.Info("Привязка самолетов закончена");
+                    Console.WriteLine("Привязка самолетов закончена");
                 }
                 catch
                 {
-                    logger.Error("Не удалось прикрепить самолет");
+                    Console.WriteLine("Не удалось прикрепить самолет");
                     flag = false;
                 }
             }
-
-            try
-            {
-                db.SaveAll(reises);
-            }
-            catch
-            { }
             string txt = "\n";
             foreach (Reis r in reises)
                 txt += r.reisToString() + "\n";
-            logger.Info("Расписание:" + txt);
+            Console.WriteLine("Расписание:" + txt);
             flag = false;
             while (!flag)
             {
@@ -140,7 +130,7 @@ namespace Airport
                 {
                     flag = true;
                     var client = new HttpClient();
-                    client.BaseAddress = new Uri("http://192.168.1.67:12253/");
+                    client.BaseAddress = new Uri("http://localhost:7015/");
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     string req = "api//board//Flights";
                     var serializer = new DataContractJsonSerializer(typeof(List<Reis>));
@@ -148,12 +138,12 @@ namespace Airport
                     var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
                     var result = client.PostAsync(req, content).Result;
                     var body = result.Content.ReadAsStringAsync().Result;
-                    logger.Info("Cвязь с табло установлена");
+                    Console.WriteLine("Cвязь с табло установлена");
                     flag = true;
                 }
                 catch
                 {
-                    logger.Error("Не удалось связаться с табло");
+                    Console.WriteLine("Не удалось связаться с табло");
 
                     flag = false;
                 }
@@ -166,12 +156,11 @@ namespace Airport
             }
             foreach (var r in reises)
             {
-                if (r.timeStart > (b - 1) * 1440)
-                {
+
                     Thread t = new Thread(delegate () { ForTime(r); });
                     t.Start();
-                }
             }
+            
         }
 
         public List<Reis> GenerateReises()
@@ -205,7 +194,7 @@ namespace Airport
         }
         public void Timer(int b)
         {
-            logger.Info("День 1 Время: " + (curMin / 60).ToString() + "ч. " + (curMin % 60).ToString() + "мин.");
+            Console.WriteLine("День 1 Время: " + (curMin / 60).ToString() + "ч. " + (curMin % 60).ToString() + "мин.");
             int i = 0;
             while (true)
             {
@@ -214,16 +203,14 @@ namespace Airport
                 Thread.Sleep(1000);
                 if (curMin >= 1440 * b)
                 {
-                    DB db = new DB();
-                    db.DeleteAll();
                     b++;
                     Start(b);
-                    logger.Info("День " + b.ToString());
+                    Console.WriteLine("День " + b.ToString());
                 }
                 if (i >= 60 / speed)
                 {
                     i = 0;
-                    logger.Info("День " + b.ToString() + " Время: " + ((curMin - 24 * (b - 1) * 60) / 60).ToString() + "ч. " + (curMin % 60).ToString() + "мин.");
+                    Console.WriteLine("День " + b.ToString() + " Время: " + ((curMin - 24 * (b - 1) * 60) / 60).ToString() + "ч. " + (curMin % 60).ToString() + "мин.");
                 }
             }
 
@@ -265,12 +252,12 @@ namespace Airport
                             ChangeSt(reis.reisNumber.ToString(), "//1", txtA, A);
                             ChangeSt(reis.reisNumber.ToString(), "//1", txtL, L);
                             //отправить Алине и Лере статус о начале регистрации
-                            logger.Info("На рейс " + reis.reisNumber.ToString() + " открыта регистрация");
+                            Console.WriteLine("На рейс " + reis.reisNumber.ToString() + " открыта регистрация");
                             reis.registrtionTime = curMin;
                         }
                         catch
                         {
-                            logger.Error("Служба регистрации и/или табло не доступны-> регистрация не началась->пробуем еще раз. Рейс " + reis.reisNumber.ToString());
+                            Console.WriteLine("Служба регистрации и/или табло не доступны-> регистрация не началась->пробуем еще раз. Рейс " + reis.reisNumber.ToString());
                             r = false;
                         }
                         if (!pp)
@@ -282,15 +269,15 @@ namespace Airport
                                 if (message == 0)
                                 {
                                     pp = false;
-                                    logger.Info("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не может начать подготовку(Не готов к этому).");
+                                    Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не может начать подготовку(Не готов к этому).");
                                 }
                                 else
-                                    logger.Info("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", начал подготовку.");
+                                    Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", начал подготовку.");
                             }
                             catch
                             {
-                                logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.-> не начал подготовку->пробуем еще раз.");
-                                 pp = false;
+                                Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.-> не начал подготовку->пробуем еще раз.");
+                                pp = false;
                             }
                         }
 
@@ -306,17 +293,17 @@ namespace Airport
                                 if (message == 0)
                                 {
                                     pb = false;
-                                    logger.Info("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не может начать посадку пассажиров.");
+                                    Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не может начать посадку пассажиров.");
                                 }
                                 else
                                 {
-                                    logger.Info("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", начал посадку пассажиров.");
+                                    Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", начал посадку пассажиров.");
                                 }
                             }
                             catch
                             {
-                                logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.-> не начал посадку пассажиров.->пробуем еще раз.");
-                                 pb = false;
+                                Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.-> не начал посадку пассажиров.->пробуем еще раз.");
+                                pb = false;
                             }
                         }
                         if (pb)
@@ -326,11 +313,11 @@ namespace Airport
                                 b = true;
                                 ChangeSt(reis.reisNumber.ToString(), "//2", txtA, A);
                                 ChangeSt(reis.reisNumber.ToString(), "//2", txtL, L);
-                                logger.Info("На рейс " + reis.reisNumber.ToString() + " открыта посадка");
+                                Console.WriteLine("На рейс " + reis.reisNumber.ToString() + " открыта посадка");
                             }
                             catch
                             {
-                                logger.Error("Служба регистрации и/или табло не доступны->открытm посадку не удалось на рейс " + reis.reisNumber.ToString() + " ->пробуем еще раз.");
+                                Console.WriteLine("Служба регистрации и/или табло не доступны->открытm посадку не удалось на рейс " + reis.reisNumber.ToString() + " ->пробуем еще раз.");
                                 b = false;
                             }
                         }
@@ -348,18 +335,18 @@ namespace Airport
                                 {
                                     pf = false;
                                     s = false;
-                                    logger.Info("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не может уйти на взлет.");
+                                    Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не может уйти на взлет.");
                                 }
                                 else
                                 {
-                                    logger.Info("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", ушел на взлет.");
+                                    Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", ушел на взлет.");
                                 }
                             }
                             catch
                             {
                                 pf = false;
                                 s = false;
-                                logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.->Не улетел->пробуем еще раз.");
+                                Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", не доступен.->Не улетел->пробуем еще раз.");
 
                             }
                         }
@@ -369,11 +356,11 @@ namespace Airport
                             {
                                 ChangeSt(reis.reisNumber.ToString(), "//3", txtA, A);
                                 //  Алине, что посадка закончена
-                                logger.Info("Информация, что самолет, связанный с рейсом " + reis.reisNumber.ToString() + ", ушел на взлет, передана табло");
+                                Console.WriteLine("Информация, что самолет, связанный с рейсом " + reis.reisNumber.ToString() + ", ушел на взлет, передана табло");
                             }
                             catch
                             {
-                                logger.Error("Табло недоступно.");
+                                Console.WriteLine("Табло недоступно.");
                             }
                         }
 
@@ -381,8 +368,8 @@ namespace Airport
                     Thread.Sleep(1000);
 
                 }
-                DB dB = new DB();
-                dB.DeleteOne(reis.reisNumber);
+                reises.Remove(reis);
+                
                 return 0;
             }
 
@@ -390,7 +377,7 @@ namespace Airport
             {
                 while (!s)
                 {
-                    if (curMin >= reis.timeStart - 10 && !s)
+                    if (curMin >= reis.timeStop - 10 && !s)
                     {
                         try
                         {
@@ -405,22 +392,21 @@ namespace Airport
                             var result = client.PostAsync(req, content).Result;
                             var body = result.Content.ReadAsStringAsync().Result;
                             s = true;
-                            logger.Info("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", создан и скоро прилетит в аэропорт.");
+                            Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", создан и скоро прилетит в аэропорт.");
 
                             //генерация самолета
                         }
                         catch
                         {
                             s = false;
-                            logger.Error("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", создать не удалось.->Не прилетит");
+                            Console.WriteLine("Cамолет, связанный с рейсом " + reis.reisNumber.ToString() + ", создать не удалось.->Не прилетит");
 
                         }
                     }
                     Thread.Sleep(1000);
                     curMin += speed;
                 }
-                DB dB = new DB();
-                dB.DeleteOne(reis.reisNumber);
+                reises.Remove(reis);
                 return 0;
             }
         }
@@ -581,129 +567,7 @@ namespace Airport
         }
 
     }
-    public class DB
-    {
-        public string path = ".\\TimeTable.txt";
 
-        public void DeleteAll()
-        {
+    
 
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(path, false, System.Text.Encoding.Default))
-                {
-                    sw.WriteLine("");
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-        }
-
-        public void DeleteOne(int ID)
-        {
-            List<Reis> Reises = ReadFile();
-            string txt = "";
-            foreach (Reis r in Reises)
-            {
-                if (r.reisNumber != ID)
-                {
-                    txt = txt + r.reisToString() + "\n";
-                }
-            }
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(path, false, System.Text.Encoding.Default))
-                {
-                    sw.WriteLine(txt);
-                }
-            }
-            catch (Exception e)
-            {
-            }
-        }
-
-        public void SaveAll(List<Reis> someReises)
-        {
-            string txt = "";
-            foreach (Reis r in someReises)
-                txt += r.reisToString() + "\n";
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(path, false, System.Text.Encoding.Default))
-                {
-                    sw.Write(txt);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-
-        public void SaveOne(Reis someReis)
-        {
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(path, true, System.Text.Encoding.Default))
-                {
-                    sw.WriteLine(someReis.reisToString());
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-
-
-        public List<Reis> ReadFile()
-        {
-            string text = "";
-            try
-            {
-                text = System.IO.File.ReadAllText(path);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            if (text != "")
-                return Parse(text);
-            return new List<Reis>();
-
-        }
-
-
-        public List<Reis> Parse(string txt)
-        {
-            List<Reis> reises = new List<Reis>();
-            try
-            {
-                string[] msg = txt.Split('\n');
-                for (int i = 0; i < msg.Length - 1; i++)
-                {
-                    string[] concrR = msg[i].Split(';');
-                    int? c, d;
-
-
-                    if (concrR[7] == "")
-                        c = null;
-                    else c = Convert.ToInt16(concrR[7]);
-
-                    if (concrR[8] == "")
-                        d = null;
-                    else d = Convert.ToInt16(concrR[8]);
-                    Reis r = new Reis(concrR[0], concrR[1], Convert.ToInt16(concrR[2]),
-                        Convert.ToInt16(concrR[3]), null, Convert.ToInt16(concrR[5]), null, c, d);
-                    reises.Add(r);
-                }
-            }
-            catch { reises = new List<Reis>(); }
-            return reises;
-        }
-    }
 }

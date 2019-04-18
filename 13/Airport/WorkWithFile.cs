@@ -25,14 +25,14 @@ namespace Airport
         Coordinate curTown;
         public int curMin;
         private static MyTime MT;
-        int speed = 50;
+        int speed = 1;
         private MyTime()
         {
             curMin = 0;
             towns.Add(new Coordinate(56, 38, "Moscow"));
             towns.Add(new Coordinate(60, 30, "Saint Petersburg"));
             towns.Add(new Coordinate(41, -74, "New York"));
-            towns.Add(new Coordinate(36, 140, "{Tokyo"));
+            towns.Add(new Coordinate(36, 140, "Tokyo"));
             towns.Add(new Coordinate(30, 31, "Cairo"));
             towns.Add(new Coordinate(1, 104, "Singapore"));
             towns.Add(new Coordinate(38, -122, "San Francisco"));

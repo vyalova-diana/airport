@@ -57,6 +57,7 @@ namespace Airport
                 }
                 catch
                 {
+                    Console.WriteLine("Сервис погоды не доступен.");
                     flag = false;
                 }
             }

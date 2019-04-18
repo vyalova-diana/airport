@@ -14,7 +14,7 @@ namespace Airport
     {
         public static void Main(string[] args)
         {
-            //MyTime MT = MyTime.GetMyTime();
+            MyTime MT = MyTime.GetMyTime();
             CreateWebHostBuilder(args).Build().Run();
         }
 

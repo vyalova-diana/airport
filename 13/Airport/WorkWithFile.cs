@@ -13,7 +13,6 @@ using System.Text;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using NLog;
 
 namespace Airport
 {
@@ -27,6 +26,7 @@ namespace Airport
         int speed = 1;
         private MyTime()
         {
+            reises = new List<Reis>();
             curMin = 0;
             towns.Add(new Coordinate(56, 38, "Moscow"));
             towns.Add(new Coordinate(60, 30, "Saint Petersburg"));

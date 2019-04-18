@@ -32,6 +32,13 @@ namespace FollowMeBackend
             sw.WriteLine(input);
             sw.Close();
         }
+        public void SetStraight(string input, string path, bool mode)
+        {
+            StreamWriter sw = new StreamWriter(path, mode, Encoding.Default);
+            sw.Write(input);
+            
+            sw.Close();
+        }
 
         public string Get(int line, string path)
         {
@@ -49,14 +56,38 @@ namespace FollowMeBackend
 
                         lineList.Add(temp);
                     }
-                    
+                    if (line == -1)
+                    {
+
+                        Console.WriteLine("Последняя строка");
+                        if (lineList.Count==0)
+                        {
+                            return "empty line";
+                        }
+                        else
+                        {
+                            return lineList[lineList.Count - 1];
+                        }
+                       
+                    }
+                    else
                     if (lineList.Count >= line)
                     {
-                        return lineList[line - 1];
+                        
+
+                        //if (lineList[line-1]=="" || lineList[line - 1] == "\0")
+                        //{
+                        //    return "empty line";
+                        //}
+                        //else
+                        //{
+                            return lineList[line - 1];
+                        //}
+                       
                     }
                     else
                     {
-                        return "empty line";     //такого номера строки нет
+                        return "empty line";     //такого номера строки ещё нет
                     }
                 }
                 
@@ -68,9 +99,10 @@ namespace FollowMeBackend
             catch (FileNotFoundException ) //если нет файла,создаём новый с нулевым состоянием
             {
                 FileStream fs = File.Create(path);
-                byte[] buf = new byte[] {0};
-                fs.Write(buf,0, 1);
-                fs.Close();
+                //byte[] buf = new byte[] {0};
+                //fs.Write(buf,0, 1);
+                //fs.Close();
+                Console.WriteLine("new text file");
                 return "0";
                 
             }

@@ -6,7 +6,7 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
 { 
     public class LocateAirplaneRequest
     {
-        public static string service= "Air Facilities";
+        public string service= "Air Facility";
         public string identifier { get; set; }
     }
 }

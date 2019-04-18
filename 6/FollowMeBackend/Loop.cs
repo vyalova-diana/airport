@@ -26,18 +26,19 @@ namespace FollowMeBackend
                 logger.Info("Got controller input:"+s);
                 
 
-                if (s.Equals("0"))
-                {
-                    logger.Info("=> no input");
-                    controllerCounter++;
-                    Thread.Sleep(5000);
+                //if (s.Equals("0") || s.Equals("\0"))
+                //{
+                //    logger.Info("=> no input");
+                //    //controllerCounter++;
+                //    Thread.Sleep(5000);
 
-                }
-                else if (s.Equals("empty line"))
+                //}
+                //else 
+                if (s.Equals("empty line"))
                 {
-                    FileManager.Instance.Set("0", "../../../../controllerStatus.txt", true);
+                    //FileManager.Instance.Set("0", "../../../../controllerStatus.txt", true);
 
-                    logger.Info("=> stay 0");
+                    logger.Info("=> no input ");
                     
                     Thread.Sleep(5000);
                 }
@@ -49,7 +50,7 @@ namespace FollowMeBackend
 
                     ThreadPool.QueueUserWorkItem(delegate { ExecuteEscort(planeID); });
                     controllerCounter++;
-                    Thread.Sleep(5000);
+                    Thread.Sleep(10000);
                 }
                 
             }
@@ -61,12 +62,15 @@ namespace FollowMeBackend
             logger.Info("Thread started");
             logger.Info("Airplane ID is {0}", planeID);
 
-            //7 начальный статус "в гараже" Busy
+            //7 поменять начальный статус "в гараже" Busy
+            var chstate = Vehicle.Instance.GetVehicleStatus();
+            chstate.status = "Busy";
+
             var flag = true;
             while (flag)
             {
 
-                var resp = GroundControlClient.StatusUpdate(Vehicle.Instance.stat);
+                var resp = GroundControlClient.StatusUpdate(chstate);
 
                 if (resp.error == "true")
                 {
@@ -75,8 +79,8 @@ namespace FollowMeBackend
                 }
                 else
                 {
-                    
-                    logger.Info("StatusUpdate: OK" + "Location: " + Vehicle.Instance.GetVehicleStatus().locationCode + " Status:" + Vehicle.Instance.GetVehicleStatus().status);
+                    Vehicle.Instance.SetVehicleStatus(chstate);
+                    logger.Info("StatusUpdate: OK" + "Location: " + chstate.locationCode + " Status:" + chstate.status);
                     flag = false;
                 }
             }
@@ -93,9 +97,9 @@ namespace FollowMeBackend
                 
                 var resp = GroundControlClient.FindAirplane(req_loc);
 
-                if (resp.result == "Not found")
+                if (resp.status == "Unknown")
                 {
-                    logger.Error("Airplane "+planeID+" location");
+                    logger.Error("Airplane "+planeID+" location unknown");
                     Thread.Sleep(5000);
                 }
                 else
@@ -330,13 +334,13 @@ namespace FollowMeBackend
             }
             
 
-            //7 поменять статус на "idle" у гейта
+            //7 поменять статус на "Busy" у гейта
             flag = true;
             var stat3 = new Status
             {
                 identifier = Vehicle.Instance.stat.identifier,
                 locationCode = req_perm2.to,
-                status = "Idle"
+                status = "Busy"
             };
             while (flag)
             {

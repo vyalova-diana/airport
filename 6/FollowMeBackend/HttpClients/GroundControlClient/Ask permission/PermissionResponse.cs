@@ -8,5 +8,7 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
     {
 
         public string permission { get; set; }
+        public string locationCode { get; set; }
+
     }
 }

@@ -9,10 +9,10 @@ namespace FollowMeBackend
     {
         Vehicle() {
             stat = new Status();
-            stat.service = "Follow Me";
+            stat.service = "Follow Me Service";
             stat.identifier = "fo8ll8ow";
             stat.locationCode = "Garage";
-            stat.status = "Busy";
+            stat.status = "Idle";
 
             var str_stat = stat.identifier+" "+stat.locationCode+" "+stat.status;
 

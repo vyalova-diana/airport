@@ -11,30 +11,66 @@ namespace FollowMeBackend.HttpClients
     {
         public static string StatusUpdate(string id,string status)
         {
-            var host = "http://localhost:7014/planes/update_status/" + id.ToString()+"/"+status.ToString();
-            string str = null;
-            var req = new StreamReader(HttpWebRequest.Create(host).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
-            return str;
+            var req = (HttpWebRequest)WebRequest.Create("http://localhost:7014/planes/update_status/");
+            req.ContentType = "application/json";
+            req.Method = "GET";
+            var SW = new StreamWriter(req.GetRequestStream());
+
+            var stringContent = id.ToString() + "/" + status.ToString();
+            SW.Write(stringContent);
+            SW.Flush();
+            SW.Close();
+
+            var resp = (HttpWebResponse)req.GetResponse();
+            var SR = new StreamReader(resp.GetResponseStream());
+
+            var jdata = SR.ReadToEnd();
+
+            return jdata;
+
+           
         }
         public static string GetStatus(string id)
         {
-            var host = "http://localhost:7014/planes/" + id.ToString();
-            string str = null;
-            var req = new StreamReader(HttpWebRequest.Create(host).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
-            var jdata = JsonConvert.DeserializeObject<AirplaneStatusResp>(str);
+            var req = (HttpWebRequest)WebRequest.Create("http://localhost:7014/planes/");
+            req.ContentType = "application/json";
+            req.Method = "GET";
+            var SW = new StreamWriter(req.GetRequestStream());
+
+            var stringContent = id.ToString();
+            SW.Write(stringContent);
+            SW.Flush();
+            SW.Close();
+
+            var resp = (HttpWebResponse)req.GetResponse();
+            var SR = new StreamReader(resp.GetResponseStream());
+
+            var jdata = JsonConvert.DeserializeObject<AirplaneStatusResp>(SR.ReadToEnd());
+
+            
             return jdata.Status;
             
         }
         public static string IsFollowing(string id)
         {
-            var host = "http://localhost:7014//planes/is_following/" + id.ToString();
-            string str = null;
-            var req = new StreamReader(HttpWebRequest.Create(host).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
+            var req = (HttpWebRequest)WebRequest.Create("http://localhost:7014//planes/is_following/");
+            req.ContentType = "application/json";
+            req.Method = "GET";
+            var SW = new StreamWriter(req.GetRequestStream());
 
-            return str;
+            var stringContent = id.ToString();
+            SW.Write(stringContent);
+            SW.Flush();
+            SW.Close();
+
+            var resp = (HttpWebResponse)req.GetResponse();
+            var SR = new StreamReader(resp.GetResponseStream());
+
+            var jdata = SR.ReadToEnd();
+
+            return jdata;
+
+           
 
         }
     }

@@ -12,36 +12,62 @@ namespace FollowMeBackend.HttpClients.GroundControlClient
     {
         public static StatusUpdateResponse StatusUpdate(Status stat)
         {
-            var stringContent = new StringContent(JsonConvert.SerializeObject(stat), Encoding.UTF8, "application/json");
-            var host = "https://groundcontrol.v2.vapor.cloud/updateTFStatus/" + stringContent;
-            string str = null;
-            var req = new StreamReader(WebRequest.Create(host).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
-            var jdata = JsonConvert.DeserializeObject<StatusUpdateResponse>(str);
+
+           var req = (HttpWebRequest) WebRequest.Create("https://groundcontrol.v2.vapor.cloud/updateTFStatus/");
+            req.ContentType = "application/json";
+            req.Method = "POST";
+            var SW = new StreamWriter(req.GetRequestStream());
+
+            var stringContent = JsonConvert.SerializeObject(stat);
+            SW.Write(stringContent);
+            SW.Flush();
+            SW.Close();
+
+            var resp= (HttpWebResponse)req.GetResponse();
+            var SR = new StreamReader(resp.GetResponseStream());
+            
+            var jdata = JsonConvert.DeserializeObject<StatusUpdateResponse>(SR.ReadToEnd());
 
             return jdata;
         }
         public static AirplanePositionResponse FindAirplane(LocateAirplaneRequest r)
         {
+            var req = (HttpWebRequest)WebRequest.Create("https://groundcontrol.v2.vapor.cloud/getTFInformation/");
+            req.ContentType = "application/json";
+            req.Method = "POST";
+            var SW = new StreamWriter(req.GetRequestStream());
 
-            var stringContent = new StringContent(JsonConvert.SerializeObject(r), Encoding.UTF8, "application/json");
-            var host = "https://groundcontrol.v2.vapor.cloud/getTFInformation/" + stringContent;
-            string str = null;
-            var req = new StreamReader(WebRequest.Create(host).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
-            var jdata = JsonConvert.DeserializeObject<AirplanePositionResponse>(str);
+            var stringContent = JsonConvert.SerializeObject(r);
+            SW.Write(stringContent);
+            SW.Flush();
+            SW.Close();
+
+            var resp = (HttpWebResponse)req.GetResponse();
+            var SR = new StreamReader(resp.GetResponseStream());
+
+            
+            var jdata = JsonConvert.DeserializeObject<AirplanePositionResponse>(SR.ReadToEnd());
 
             return jdata;
         }
         public static PermissionResponse AskPermission(PermissionRequest r)
         {
+            var req = (HttpWebRequest)WebRequest.Create("https://groundcontrol.v2.vapor.cloud/askForPermission/");
+            req.ContentType = "application/json";
+            req.Method = "POST";
+            var SW = new StreamWriter(req.GetRequestStream());
 
-            var stringContent = new StringContent(JsonConvert.SerializeObject(r), Encoding.UTF8, "application/json");
-            var host = "https://groundcontrol.v2.vapor.cloud/askForPermission/" + stringContent;
-            string str = null;
-            var req = new StreamReader(WebRequest.Create(host).GetResponse().GetResponseStream());
-            str = req.ReadToEnd();
-            var jdata = JsonConvert.DeserializeObject<PermissionResponse>(str);
+
+            var stringContent = JsonConvert.SerializeObject(r);
+            SW.Write(stringContent);
+            SW.Flush();
+            SW.Close();
+
+            var resp = (HttpWebResponse)req.GetResponse();
+            var SR = new StreamReader(resp.GetResponseStream());
+
+           
+            var jdata = JsonConvert.DeserializeObject<PermissionResponse>(SR.ReadToEnd());
 
             return jdata;
         }
